@@ -1527,13 +1527,7 @@ function buildDataSummary(periodDays = null) {
 
   if (!rows.length) return 'No activity data for this period.';
 
-  // Group by month
-  const byMonth = {};
-  rows.forEach(r => {
-    const k = r.date.getFullYear() + '-' + String(r.date.getMonth()+1).padStart(2,'0');
-    if (!byMonth[k]) byMonth[k] = [];
-    byMonth[k].push(r);
-  });
+  const fmt = d => d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
 
   // Group by year
   const byYear = {};
@@ -1541,6 +1535,14 @@ function buildDataSummary(periodDays = null) {
     const y = r.date.getFullYear();
     if (!byYear[y]) byYear[y] = [];
     byYear[y].push(r);
+  });
+
+  // Group by month
+  const byMonth = {};
+  rows.forEach(r => {
+    const k = r.date.getFullYear() + '-' + String(r.date.getMonth()+1).padStart(2,'0');
+    if (!byMonth[k]) byMonth[k] = [];
+    byMonth[k].push(r);
   });
 
   // Type breakdown
@@ -1583,6 +1585,20 @@ function buildDataSummary(periodDays = null) {
     mo.forEach(r => typeCount[r.type] = (typeCount[r.type]||0)+1);
     summary += `  ${month}: ${mo.length} activities, ${Math.round(mo.reduce((a,r)=>a+r.distKm,0))} km, ${Math.round(mo.reduce((a,r)=>a+r.timeHr,0))} hrs | ${Object.entries(typeCount).map(([t,c])=>t+':'+c).join(', ')}\n`;
   });
+
+  // Individual activity log (most recent 90 days always, or all if periodDays <= 90)
+  const logDays = periodDays && periodDays <= 90 ? periodDays : 90;
+  const logCutoff = new Date(); logCutoff.setDate(logCutoff.getDate() - logDays);
+  const recentRows = rows.filter(r => r.date >= logCutoff).sort((a,b) => a.date - b.date);
+  if (recentRows.length) {
+    summary += `\nINDIVIDUAL ACTIVITY LOG (last ${logDays} days, each row = one session):\n`;
+    summary += `DATE | TYPE | DISTANCE(km) | TIME(hrs) | ELEVATION(m) | AVG_PACE(min/km)\n`;
+    recentRows.forEach(r => {
+      const pace = r.speedMps > 0.5 ? (1000/r.speedMps/60).toFixed(2) : '-';
+      const paceStr = pace !== '-' ? Math.floor(pace) + ':' + String(Math.round((pace%1)*60)).padStart(2,'0') : '-';
+      summary += `${fmt(r.date)} | ${r.type} | ${r.distKm || 0} | ${Math.round(r.timeHr*100)/100} | ${Math.round(r.elevM||0)} | ${paceStr}\n`;
+    });
+  }
 
   return summary;
 }
