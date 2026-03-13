@@ -1,12 +1,14 @@
 exports.handler = async function(event, context) {
-  // Only allow POST
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
   const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
   if (!ANTHROPIC_API_KEY) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'API key not configured on server.' }) };
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'API key not configured on server.' })
+    };
   }
 
   let body;
@@ -30,22 +32,28 @@ exports.handler = async function(event, context) {
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-opus-4-6',
+        model: 'claude-sonnet-4-6',
         max_tokens: 4000,
-        system: `You are a senior sports data scientist and physician with 20 years of experience analysing athlete training loads, physiological adaptation, and long-term performance trends. You combine the precision of a data scientist with the clinical insight of a sports medicine doctor. Your analysis is honest, specific, and actionable — you do not give generic fitness advice. Every insight must be grounded in the actual numbers provided.`,
+        system: 'You are a senior sports data scientist and physician with 20 years of experience analysing athlete training loads, physiological adaptation, and long-term performance trends. You combine the precision of a data scientist with the clinical insight of a sports medicine doctor. Your analysis is honest, specific, and actionable — you do not give generic fitness advice. Every insight must be grounded in the actual numbers provided.',
         messages: [{ role: 'user', content: prompt }]
       })
     });
 
-    const data = await response.json();
+    const responseText = await response.text();
 
     if (!response.ok) {
+      let errMsg = responseText;
+      try {
+        const errJson = JSON.parse(responseText);
+        errMsg = errJson.error?.message || responseText;
+      } catch(e) {}
       return {
         statusCode: response.status,
-        body: JSON.stringify({ error: data.error?.message || 'Claude API error' })
+        body: JSON.stringify({ error: `Claude API error (${response.status}): ${errMsg}` })
       };
     }
 
+    const data = JSON.parse(responseText);
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -53,6 +61,9 @@ exports.handler = async function(event, context) {
     };
 
   } catch(e) {
-    return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Function error: ' + e.message })
+    };
   }
 };
