@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <link rel="manifest" href="data:application/json,{
+    &quot;name&quot;: &quot;The Grind&quot;,
+    &quot;short_name&quot;: &quot;The Grind&quot;,
+    &quot;display&quot;: &quot;standalone&quot;,
+    &quot;orientation&quot;: &quot;portrait&quot;,
+    &quot;background_color&quot;: &quot;#0a0a0a&quot;,
+    &quot;theme_color&quot;: &quot;#0a0a0a&quot;,
+    &quot;start_url&quot;: &quot;.&quot;,
+    &quot;icons&quot;: [{
+      &quot;src&quot;: &quot;data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0a0a'/><text y='75' x='50' text-anchor='middle' font-size='65'>💪</text></svg>&quot;,
+      &quot;sizes&quot;: &quot;192x192&quot;,
+      &quot;type&quot;: &quot;image/svg+xml&quot;
+    }]
+  }">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="The Grind">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230a0a0a'/><text y='72' x='50' text-anchor='middle' font-size='60'>💪</text></svg>">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>The Grind</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0a;
+  --surface: #141414;
+  --surface2: #1c1c1c;
+  --border: #252525;
+  --orange: #fc4c02;
+  --orange-soft: rgba(252,76,2,0.12);
+  --text: #f2f2f2;
+  --muted: #777;
+  --muted2: #444;
+  --run: #fc4c02;
+  --football: #4ade80;
+  --swim: #38bdf8;
+  --other: #a78bfa;
+  --hike: #f59e0b;
+  --tab-h: 64px;
+  --header-h: 56px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  overflow: hidden;
+}
+
+/* ── Header ── */
+.app-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 100;
+}
+
+.app-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 2px;
+  color: var(--orange);
+}
+
+.connect-btn {
+  background: var(--orange);
+  color: #fff;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ── Connect Sheet Modal ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  transition: opacity 0.3s;
+}
+.modal-overlay.hidden { opacity: 0; pointer-events: none; }
+
+.modal-sheet {
+  background: var(--surface);
+  border-radius: 20px 20px 0 0;
+  padding: 24px 20px 40px;
+  width: 100%;
+  max-width: 480px;
+  border-top: 1px solid var(--border);
+  transform: translateY(0);
+  transition: transform 0.3s;
+}
+.modal-overlay.hidden .modal-sheet { transform: translateY(100%); }
+
+.modal-handle {
+  width: 40px; height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin: 0 auto 20px;
+}
+
+.modal-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px;
+  letter-spacing: 1.5px;
+  margin-bottom: 6px;
+}
+
+.modal-sub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.field-label {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 6px;
+}
+
+.field-input {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  margin-bottom: 14px;
+  transition: border-color 0.2s;
+}
+.field-input:focus { outline: none; border-color: var(--orange); }
+.field-input::placeholder { color: var(--muted2); }
+
+.modal-actions { display: flex; gap: 10px; margin-top: 6px; }
+
+.btn-primary {
+  flex: 1;
+  background: var(--orange);
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-ghost {
+  background: var(--surface2);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.status-msg {
+  font-size: 12px;
+  margin-top: 10px;
+  min-height: 18px;
+  text-align: center;
+}
+.status-msg.ok { color: #4ade80; }
+.status-msg.err { color: #f87171; }
+.status-msg.loading { color: var(--orange); }
+
+/* ── Scroll area ── */
+.scroll-area {
+  position: fixed;
+  top: var(--header-h);
+  bottom: var(--tab-h);
+  left: 0; right: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tab-page { display: none; padding: 16px 14px 20px; }
+.tab-page.active { display: block; }
+
+/* ── Stat blocks ── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.stat-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent, var(--orange));
+}
+
+.stat-block-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  color: var(--text);
+  line-height: 1;
+}
+
+.stat-block-unit {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 300;
+}
+
+.stat-block-label {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1.3;
+  margin-top: 2px;
+}
+
+/* ── Section heading ── */
+.section-heading {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 1.5px;
+  color: var(--text);
+  margin: 20px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-heading::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── Chart card ── */
+.chart-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 14px;
+  margin-bottom: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.chart-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent, var(--orange)), transparent);
+}
+
+.chart-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.chart-wrap { position: relative; height: 180px; }
+.chart-wrap.short { height: 140px; }
+
+/* ── Time range tabs ── */
+.range-tabs {
+  display: flex;
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 3px;
+  margin-bottom: 14px;
+  gap: 2px;
+}
+
+.range-tab {
+  flex: 1;
+  padding: 7px 4px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.range-tab.active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+
+/* ── Mini stat row ── */
+.mini-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.mini-stat {
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 10px 8px;
+  text-align: center;
+}
+
+.mini-stat-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  color: var(--text);
+  line-height: 1;
+}
+
+.mini-stat-lbl {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 3px;
+  line-height: 1.3;
+}
+
+/* ── Bottom tabs ── */
+.bottom-tabs {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: var(--tab-h);
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex;
+  z-index: 100;
+}
+
+.tab-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s;
+  padding-bottom: 4px;
+  position: relative;
+}
+
+.tab-btn.active { color: var(--orange); }
+
+.tab-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 20%; right: 20%;
+  height: 2px;
+  background: var(--orange);
+  border-radius: 0 0 2px 2px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.tab-btn.active::before { opacity: 1; }
+
+.tab-icon { font-size: 20px; line-height: 1; }
+.tab-label { font-size: 10px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
+
+/* ── Loading skeleton ── */
+.skeleton {
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+
+/* ── AI Insights ── */
+.ai-prompt-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.ai-prompt-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #a78bfa, #38bdf8);
+}
+.ai-prompt-card:active { background: var(--surface2); }
+.ai-prompt-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ai-prompt-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.ai-result-card {
+  background: var(--surface);
+  border: 1px solid #a78bfa44;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: none;
+}
+.ai-result-card.visible { display: block; }
+.ai-result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.ai-result-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 1px;
+  color: #a78bfa;
+}
+.ai-refresh-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.ai-result-body {
+  font-size: 13px;
+  color: #ccc;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+.ai-result-body h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: var(--text);
+  margin: 16px 0 6px;
+}
+.ai-loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+.ai-loading-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #a78bfa;
+  animation: aipulse 1.2s infinite;
+}
+.ai-loading-dot:nth-child(2) { animation-delay: 0.2s; }
+.ai-loading-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes aipulse { 0%,100%{opacity:0.2;transform:scale(0.8)} 50%{opacity:1;transform:scale(1.2)} }
+.cached-badge {
+  font-size: 10px;
+  background: #a78bfa22;
+  color: #a78bfa;
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1px solid #a78bfa44;
+}
+
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* ── Safe area for iPhone ── */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .bottom-tabs { padding-bottom: env(safe-area-inset-bottom); height: calc(var(--tab-h) + env(safe-area-inset-bottom)); }
+  .scroll-area { bottom: calc(var(--tab-h) + env(safe-area-inset-bottom)); }
+}
+</style>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
+  </script>
+
+  <script>
+    // Request fullscreen on first user interaction
+    function goFullscreen() {
+      const el = document.documentElement;
+      const req = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+      if (req) req.call(el);
+      document.removeEventListener('touchstart', goFullscreen);
+      document.removeEventListener('click', goFullscreen);
+    }
+    document.addEventListener('touchstart', goFullscreen, {once: true});
+    document.addEventListener('click', goFullscreen, {once: true});
+
+    // Also try immediately on load
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const el = document.documentElement;
+        const req = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+        if (req) req.call(el).catch(() => {});
+      }, 500);
+    });
+  </script>
+</head>
+<body>
+
+<!-- Header -->
+<div class="app-header">
+  <div class="app-title">THE GRIND</div>
+  <button id="refresh-btn" onclick="refreshData()" style="background:var(--surface2);border:1px solid var(--border);color:var(--muted);width:34px;height:34px;border-radius:8px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1">↻</button>
+</div>
+
+<!-- Connect Modal -->
+<div class="modal-overlay hidden" id="modal" onclick="handleOverlayClick(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">CONNECT YOUR SHEET</div>
+    <div class="modal-sub">Paste your Google Sheet ID and API key. The sheet must be shared as "Anyone with link can view" and have a tab named <strong>Master</strong>.</div>
+    <div class="field-label">Sheet ID</div>
+    <input class="field-input" id="sheetId" type="text" value="1dtIQ5lOnLUfO2oUPKNt135L-CW4ZlmC-yqhIh6Byq4E" autocomplete="off" autocorrect="off" spellcheck="false">
+    <div class="field-label">API Key</div>
+    <input class="field-input" id="apiKey" type="text" value="AIzaSyAo9h6eH9kZkOf_-ocE49c5aKPD7PYeA9U" autocomplete="off" autocorrect="off" spellcheck="false">
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="hideModal()">Cancel</button>
+      <button class="btn-primary" onclick="loadData()">Load Data</button>
+    </div>
+    <div class="status-msg" id="statusMsg"></div>
+  </div>
+</div>
+
+
+<!-- CSV Upload Modal -->
+<div class="modal-overlay hidden" id="csv-modal" onclick="handleCSVOverlayClick(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">UPLOAD CSV</div>
+    <div class="modal-sub">Export your Google Sheet as a CSV file and upload it here. Works fully offline — no internet needed.</div>
+    <div class="field-label">Select CSV File</div>
+    <input type="file" id="csvFile" accept=".csv" style="display:none" onchange="handleCSVFile(event)">
+    <button onclick="document.getElementById('csvFile').click()" style="width:100%;background:var(--surface2);border:2px dashed var(--border);color:var(--muted);padding:24px;border-radius:10px;font-family:Outfit,sans-serif;font-size:14px;cursor:pointer;margin-bottom:14px" id="csvDropBtn">
+      Tap to choose a CSV file
+    </button>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="hideCSVModal()">Cancel</button>
+    </div>
+    <div class="status-msg" id="csvStatusMsg"></div>
+  </div>
+</div>
+
+<!-- Scrollable content -->
+<div class="scroll-area">
+
+  <!-- ══ OVERALL TAB ══ -->
+  <div class="tab-page active" id="page-overall">
+    <div class="section-heading">ALL TIME</div>
+    <div class="stat-grid">
+      <div class="stat-block" style="--accent:#fc4c02">
+        <div class="stat-block-val" id="ov-total-count">—</div>
+        <div class="stat-block-unit">activities</div>
+        <div class="stat-block-label">Total Workouts</div>
+      </div>
+      <div class="stat-block" style="--accent:#38bdf8">
+        <div class="stat-block-val" id="ov-total-dist">—</div>
+        <div class="stat-block-unit">km</div>
+        <div class="stat-block-label">Total Distance</div>
+      </div>
+      <div class="stat-block" style="--accent:#4ade80">
+        <div class="stat-block-val" id="ov-total-time">—</div>
+        <div class="stat-block-unit">hrs</div>
+        <div class="stat-block-label">Total Time</div>
+      </div>
+    </div>
+
+    <div class="section-heading">BY YEAR</div>
+
+    <div class="chart-card">
+      <div class="chart-label">Total Workouts per Year</div>
+      <div class="chart-wrap"><canvas id="ov-workouts-year"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-label">Total Distance per Year (km)</div>
+      <div class="chart-wrap"><canvas id="ov-dist-year"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-label">Total Time per Year (hrs)</div>
+      <div class="chart-wrap"><canvas id="ov-time-year"></canvas></div>
+    </div>
+
+    <div class="section-heading">🏃 RUNNING</div>
+
+    <div class="chart-card" style="--accent:var(--run)">
+      <div class="chart-label">Run Distance per Year (km)</div>
+      <div class="chart-wrap"><canvas id="ov-run-dist-year"></canvas></div>
+    </div>
+    <div class="chart-card" style="--accent:var(--run)">
+      <div class="chart-label">Number of Runs per Year</div>
+      <div class="chart-wrap"><canvas id="ov-run-count-year"></canvas></div>
+    </div>
+    <div class="chart-card" style="--accent:var(--run)">
+      <div class="chart-label">Run Time per Year (hrs)</div>
+      <div class="chart-wrap"><canvas id="ov-run-time-year"></canvas></div>
+    </div>
+
+    <div class="section-heading">⚽ FOOTBALL</div>
+
+    <div class="chart-card" style="--accent:var(--football)">
+      <div class="chart-label">Football Distance per Year (km)</div>
+      <div class="chart-wrap"><canvas id="ov-fb-dist-year"></canvas></div>
+    </div>
+    <div class="chart-card" style="--accent:var(--football)">
+      <div class="chart-label">Football Games per Year</div>
+      <div class="chart-wrap"><canvas id="ov-fb-count-year"></canvas></div>
+    </div>
+    <div class="chart-card" style="--accent:var(--football)">
+      <div class="chart-label">Football Time per Year (hrs)</div>
+      <div class="chart-wrap"><canvas id="ov-fb-time-year"></canvas></div>
+    </div>
+
+    <div class="section-heading">🏊 SWIMMING</div>
+
+    <div class="chart-card" style="--accent:var(--swim)">
+      <div class="chart-label">Swim Sessions per Year</div>
+      <div class="chart-wrap"><canvas id="ov-swim-count-year"></canvas></div>
+    </div>
+
+    <div class="section-heading">🥾 HIKING</div>
+
+    <div class="chart-card" style="--accent:var(--hike)">
+      <div class="chart-label">Hike Distance per Year (km)</div>
+      <div class="chart-wrap"><canvas id="ov-hike-dist-year"></canvas></div>
+    </div>
+    <div class="chart-card" style="--accent:var(--hike)">
+      <div class="chart-label">Number of Hikes per Year</div>
+      <div class="chart-wrap"><canvas id="ov-hike-count-year"></canvas></div>
+    </div>
+    <div class="chart-card" style="--accent:var(--hike)">
+      <div class="chart-label">Hike Time per Year (hrs)</div>
+      <div class="chart-wrap"><canvas id="ov-hike-time-year"></canvas></div>
+    </div>
+    <div class="chart-card" style="--accent:var(--hike)">
+      <div class="chart-label">Total Elevation per Year (m)</div>
+      <div class="chart-wrap"><canvas id="ov-hike-elev-year"></canvas></div>
+    </div>
+
+    <div class="section-heading">🎯 OTHER</div>
+
+    <div class="chart-card" style="--accent:var(--other)">
+      <div class="chart-label">Other Activities per Year</div>
+      <div class="chart-wrap"><canvas id="ov-other-year"></canvas></div>
+    </div>
+  </div>
+
+  <!-- ══ RUN TAB ══ -->
+  <div class="tab-page" id="page-run">
+    <div class="section-heading" style="color:var(--run)">🏃 RUNNING</div>
+
+    <div class="range-tabs" id="run-range-tabs">
+      <button class="range-tab" onclick="setRunRange('7d',this)">7 Days</button>
+      <button class="range-tab" onclick="setRunRange('4w',this)">4 Weeks</button>
+      <button class="range-tab" onclick="setRunRange('12m',this)">12 Months</button>
+      <button class="range-tab active" onclick="setRunRange('year',this)">By Year</button>
+    </div>
+
+    <div class="mini-stats">
+      <div class="mini-stat">
+        <div class="mini-stat-val" id="run-stat-dist">—</div>
+        <div class="mini-stat-lbl">km</div>
+      </div>
+      <div class="mini-stat">
+        <div class="mini-stat-val" id="run-stat-count">—</div>
+        <div class="mini-stat-lbl">runs</div>
+      </div>
+      <div class="mini-stat">
+        <div class="mini-stat-val" id="run-stat-time">—</div>
+        <div class="mini-stat-lbl">hrs</div>
+      </div>
+    </div>
+
+    <div class="chart-card" style="--accent:var(--run)">
+      <div class="chart-label" id="run-dist-label">Distance (km)</div>
+      <div class="chart-wrap"><canvas id="run-dist-chart"></canvas></div>
+    </div>
+    <div class="chart-card" style="--accent:var(--run)">
+      <div class="chart-label" id="run-count-label">Number of Runs</div>
+      <div class="chart-wrap"><canvas id="run-count-chart"></canvas></div>
+    </div>
+    <div class="chart-card" style="--accent:var(--run)">
+      <div class="chart-label" id="run-time-label">Time (hrs)</div>
+      <div class="chart-wrap"><canvas id="run-time-chart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- ══ FOOTBALL TAB ══ -->
+  <div class="tab-page" id="page-football">
+    <div class="section-heading" style="color:var(--football)">⚽ FOOTBALL</div>
+
+    <div class="range-tabs" id="fb-range-tabs">
+      <button class="range-tab" onclick="setFbRange('7d',this)">7 Days</button>
+      <button class="range-tab" onclick="setFbRange('4w',this)">4 Weeks</button>
+      <button class="range-tab" onclick="setFbRange('12m',this)">12 Months</button>
+      <button class="range-tab active" onclick="setFbRange('year',this)">By Year</button>
+    </div>
+
+    <div class="mini-stats">
+      <div class="mini-stat">
+        <div class="mini-stat-val" id="fb-stat-dist">—</div>
+        <div class="mini-stat-lbl">km</div>
+      </div>
+      <div class="mini-stat">
+        <div class="mini-stat-val" id="fb-stat-count">—</div>
+        <div class="mini-stat-lbl">games</div>
+      </div>
+      <div class="mini-stat">
+        <div class="mini-stat-val" id="fb-stat-time">—</div>
+        <div class="mini-stat-lbl">hrs</div>
+      </div>
+    </div>
+
+    <div class="chart-card" style="--accent:var(--football)">
+      <div class="chart-label" id="fb-dist-label">Distance (km)</div>
+      <div class="chart-wrap"><canvas id="fb-dist-chart"></canvas></div>
+    </div>
+    <div class="chart-card" style="--accent:var(--football)">
+      <div class="chart-label" id="fb-count-label">Number of Games</div>
+      <div class="chart-wrap"><canvas id="fb-count-chart"></canvas></div>
+    </div>
+    <div class="chart-card" style="--accent:var(--football)">
+      <div class="chart-label" id="fb-time-label">Time (hrs)</div>
+      <div class="chart-wrap"><canvas id="fb-time-chart"></canvas></div>
+    </div>
+  </div>
+
+
+  <!-- ══ HIKE TAB ══ -->
+  <div class="tab-page" id="page-hike">
+    <div class="section-heading" style="color:var(--hike)">🥾 HIKING</div>
+
+    <div class="range-tabs" id="hike-range-tabs">
+      <button class="range-tab" onclick="setHikeRange('7d',this)">7 Days</button>
+      <button class="range-tab" onclick="setHikeRange('4w',this)">4 Weeks</button>
+      <button class="range-tab" onclick="setHikeRange('12m',this)">12 Months</button>
+      <button class="range-tab active" onclick="setHikeRange('year',this)">By Year</button>
+    </div>
+
+    <div class="mini-stats" style="grid-template-columns: repeat(4,1fr)">
+      <div class="mini-stat">
+        <div class="mini-stat-val" id="hike-stat-dist">—</div>
+        <div class="mini-stat-lbl">km</div>
+      </div>
+      <div class="mini-stat">
+        <div class="mini-stat-val" id="hike-stat-count">—</div>
+        <div class="mini-stat-lbl">hikes</div>
+      </div>
+      <div class="mini-stat">
+        <div class="mini-stat-val" id="hike-stat-time">—</div>
+        <div class="mini-stat-lbl">hrs</div>
+      </div>
+      <div class="mini-stat">
+        <div class="mini-stat-val" id="hike-stat-elev">—</div>
+        <div class="mini-stat-lbl">m elev</div>
+      </div>
+    </div>
+
+    <div class="chart-card" style="--accent:var(--hike)">
+      <div class="chart-label" id="hike-dist-label">Distance (km)</div>
+      <div class="chart-wrap"><canvas id="hike-dist-chart"></canvas></div>
+    </div>
+    <div class="chart-card" style="--accent:var(--hike)">
+      <div class="chart-label" id="hike-count-label">Number of Hikes</div>
+      <div class="chart-wrap"><canvas id="hike-count-chart"></canvas></div>
+    </div>
+    <div class="chart-card" style="--accent:var(--hike)">
+      <div class="chart-label" id="hike-time-label">Time (hrs)</div>
+      <div class="chart-wrap"><canvas id="hike-time-chart"></canvas></div>
+    </div>
+    <div class="chart-card" style="--accent:var(--hike)">
+      <div class="chart-label" id="hike-elev-label">Elevation Gain (m)</div>
+      <div class="chart-wrap"><canvas id="hike-elev-chart"></canvas></div>
+    </div>
+  </div>
+
+
+  <!-- ══ AI TAB ══ -->
+  <div class="tab-page" id="page-ai">
+    <div class="section-heading" style="color:#a78bfa">🤖 AI INSIGHTS</div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6">Tap any analysis below to generate AI-powered insights from your training data. Results are cached — tap ↻ to re-run.</p>
+
+    <!-- Overall Fitness Summary -->
+    <div class="ai-prompt-card" id="card-overall" onclick="runAnalysis('overall')">
+      <div class="ai-prompt-title">🏅 Overall Fitness Assessment <span style="font-size:18px">›</span></div>
+      <div class="ai-prompt-desc">Full career summary, current fitness level, and what your data says about you as an athlete.</div>
+    </div>
+    <div class="ai-result-card" id="result-overall">
+      <div class="ai-result-header">
+        <div class="ai-result-title">🏅 OVERALL FITNESS</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="cached-badge" id="cache-overall" style="display:none">cached</span>
+          <button class="ai-refresh-btn" onclick="runAnalysis('overall', true)">↻</button>
+        </div>
+      </div>
+      <div class="ai-result-body" id="body-overall"></div>
+    </div>
+
+    <!-- Year by Year -->
+    <div class="ai-prompt-card" id="card-yearly" onclick="runAnalysis('yearly')">
+      <div class="ai-prompt-title">📅 Year by Year Breakdown <span style="font-size:18px">›</span></div>
+      <div class="ai-prompt-desc">How each year compared — volume, sport focus, trends and progression over time.</div>
+    </div>
+    <div class="ai-result-card" id="result-yearly">
+      <div class="ai-result-header">
+        <div class="ai-result-title">📅 YEAR BY YEAR</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="cached-badge" id="cache-yearly" style="display:none">cached</span>
+          <button class="ai-refresh-btn" onclick="runAnalysis('yearly', true)">↻</button>
+        </div>
+      </div>
+      <div class="ai-result-body" id="body-yearly"></div>
+    </div>
+
+    <!-- Past 12 months -->
+    <div class="ai-prompt-card" id="card-12m" onclick="runAnalysis('12m')">
+      <div class="ai-prompt-title">📆 Past 12 Months <span style="font-size:18px">›</span></div>
+      <div class="ai-prompt-desc">Monthly breakdown, pace trends, load patterns vs same period last year.</div>
+    </div>
+    <div class="ai-result-card" id="result-12m">
+      <div class="ai-result-header">
+        <div class="ai-result-title">📆 PAST 12 MONTHS</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="cached-badge" id="cache-12m" style="display:none">cached</span>
+          <button class="ai-refresh-btn" onclick="runAnalysis('12m', true)">↻</button>
+        </div>
+      </div>
+      <div class="ai-result-body" id="body-12m"></div>
+    </div>
+
+    <!-- Last 3 months -->
+    <div class="ai-prompt-card" id="card-3m" onclick="runAnalysis('3m')">
+      <div class="ai-prompt-title">🗓️ Last 3 Months <span style="font-size:18px">›</span></div>
+      <div class="ai-prompt-desc">Recent focus areas, training load trend, injury risk patterns.</div>
+    </div>
+    <div class="ai-result-card" id="result-3m">
+      <div class="ai-result-header">
+        <div class="ai-result-title">🗓️ LAST 3 MONTHS</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="cached-badge" id="cache-3m" style="display:none">cached</span>
+          <button class="ai-refresh-btn" onclick="runAnalysis('3m', true)">↻</button>
+        </div>
+      </div>
+      <div class="ai-result-body" id="body-3m"></div>
+    </div>
+
+    <!-- Last 4 weeks -->
+    <div class="ai-prompt-card" id="card-4w" onclick="runAnalysis('4w')">
+      <div class="ai-prompt-title">📅 Last 4 Weeks <span style="font-size:18px">›</span></div>
+      <div class="ai-prompt-desc">Week by week breakdown — build, taper or recovery phase?</div>
+    </div>
+    <div class="ai-result-card" id="result-4w">
+      <div class="ai-result-header">
+        <div class="ai-result-title">📅 LAST 4 WEEKS</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="cached-badge" id="cache-4w" style="display:none">cached</span>
+          <button class="ai-refresh-btn" onclick="runAnalysis('4w', true)">↻</button>
+        </div>
+      </div>
+      <div class="ai-result-body" id="body-4w"></div>
+    </div>
+
+    <!-- Last 7 days -->
+    <div class="ai-prompt-card" id="card-7d" onclick="runAnalysis('7d')">
+      <div class="ai-prompt-title">🗓️ Last 7 Days <span style="font-size:18px">›</span></div>
+      <div class="ai-prompt-desc">This week's activity, whether it's typical, and what to do next.</div>
+    </div>
+    <div class="ai-result-card" id="result-7d">
+      <div class="ai-result-header">
+        <div class="ai-result-title">🗓️ LAST 7 DAYS</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="cached-badge" id="cache-7d" style="display:none">cached</span>
+          <button class="ai-refresh-btn" onclick="runAnalysis('7d', true)">↻</button>
+        </div>
+      </div>
+      <div class="ai-result-body" id="body-7d"></div>
+    </div>
+
+    <!-- Key Recommendations -->
+    <div class="ai-prompt-card" id="card-recs" onclick="runAnalysis('recs')">
+      <div class="ai-prompt-title">🎯 Key Recommendations <span style="font-size:18px">›</span></div>
+      <div class="ai-prompt-desc">5 specific, data-driven actions to take in the next 30 days.</div>
+    </div>
+    <div class="ai-result-card" id="result-recs">
+      <div class="ai-result-header">
+        <div class="ai-result-title">🎯 RECOMMENDATIONS</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="cached-badge" id="cache-recs" style="display:none">cached</span>
+          <button class="ai-refresh-btn" onclick="runAnalysis('recs', true)">↻</button>
+        </div>
+      </div>
+      <div class="ai-result-body" id="body-recs"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Bottom tab bar -->
+<div class="bottom-tabs">
+  <button class="tab-btn active" onclick="switchTab('overall',this)">
+    <span class="tab-icon">📊</span>
+    <span class="tab-label">Overall</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('run',this)">
+    <span class="tab-icon">🏃</span>
+    <span class="tab-label">Run</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('football',this)">
+    <span class="tab-icon">⚽</span>
+    <span class="tab-label">Football</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('hike',this)">
+    <span class="tab-icon">🥾</span>
+    <span class="tab-label">Hike</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('ai',this)">
+    <span class="tab-icon">🤖</span>
+    <span class="tab-label">AI</span>
+  </button>
+</div>
+
+<script>
+// ─── Global state ──────────────────────────────────────────────────────────
+let allRows = [];
+let charts = {};
+let runRange = 'year';
+let fbRange = 'year';
+let hikeRange = 'year';
+
+// ─── Chart defaults ────────────────────────────────────────────────────────
+Chart.register(ChartDataLabels);
+Chart.defaults.color = '#666';
+Chart.defaults.borderColor = '#1c1c1c';
+Chart.defaults.font.family = 'Outfit';
+Chart.defaults.font.size = 11;
+
+// ─── Modal ─────────────────────────────────────────────────────────────────
+function showModal() { document.getElementById('modal').classList.remove('hidden'); }
+function hideModal() { document.getElementById('modal').classList.add('hidden'); }
+function handleOverlayClick(e) { if (e.target === document.getElementById('modal')) hideModal(); }
+
+function setStatus(type, msg) {
+  const el = document.getElementById('statusMsg');
+  el.className = 'status-msg ' + type;
+  el.textContent = msg;
+}
+
+// ─── Load data ─────────────────────────────────────────────────────────────
+async function loadData() {
+  const sheetId = document.getElementById('sheetId').value.trim() || '1dtIQ5lOnLUfO2oUPKNt135L-CW4ZlmC-yqhIh6Byq4E';
+  const apiKey = document.getElementById('apiKey').value.trim() || 'AIzaSyAo9h6eH9kZkOf_-ocE49c5aKPD7PYeA9U';
+  setStatus('loading', 'Loading…');
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Master?key=${apiKey}`;
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    if (!res.ok) {
+      const code = data.error?.code || res.status;
+      const msg = data.error?.message || 'Unknown error';
+      if (code === 403) throw new Error('Permission denied. Make sure the sheet is shared publicly and the API key has no referrer restrictions.');
+      if (code === 404) throw new Error('Sheet not found. Check the Sheet ID and that the tab is named "Master".');
+      throw new Error(`[${code}] ${msg}`);
+    }
+    if (!data.values || data.values.length < 2) throw new Error('No data found in the sheet.');
+    parseRows(data.values);
+    setStatus('ok', `✓ Loaded ${allRows.length} activities`);
+    setTimeout(hideModal, 1200);
+  } catch(e) {
+    setStatus('err', e.message);
+  }
+}
+
+// ─── Parse ─────────────────────────────────────────────────────────────────
+function parseRows(values) {
+  const headers = values[0];
+  const idx = {};
+  headers.forEach((h,i) => idx[h.trim()] = i);
+  const g = (row, k) => (row[idx[k]] || '').toString().trim();
+  const num = (row, k) => parseFloat(g(row,k)) || 0;
+
+  allRows = values.slice(1).map(row => {
+    const dateRaw = g(row,'activity_date') || g(row,'start_date_local');
+    return {
+      type: g(row,'type') || g(row,'sport_type'),
+      date: parseDate(dateRaw),
+      distKm: num(row,'Distance(km)'),
+      timeHr: num(row,'moving_time_hr'),
+      hr: num(row,'average_heartrate'),
+      speedMps: num(row,'average_speed_mps'),
+      elevM: num(row,'total_elevation_gain_m'),
+      year: num(row,'Year'),
+      month: num(row,'Month'),
+      week: num(row,'Week'),
+    };
+  }).filter(r => r.date && r.type);
+
+  renderAll();
+}
+
+function parseDate(raw) {
+  if (!raw) return null;
+  raw = raw.trim();
+  // Format: " 25/ 12/21" or "25/12/21" → year=2025, month=12, day=21
+  const slashFmt = raw.match(/(\d{1,2})\s*\/\s*(\d{1,2})\s*\/\s*(\d{1,2})/);
+  if (slashFmt) {
+    const [, yy, mm, dd] = slashFmt;
+    return new Date(parseInt('20'+yy.padStart(2,'0')), parseInt(mm)-1, parseInt(dd));
+  }
+  // ISO format: 2025-12-21T... or 2025-12-21
+  const iso = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (iso) return new Date(parseInt(iso[1]), parseInt(iso[2])-1, parseInt(iso[3]));
+  return null;
+}
+
+// ─── Tab switching ─────────────────────────────────────────────────────────
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  btn.classList.add('active');
+  document.querySelector('.scroll-area').scrollTop = 0;
+}
+
+// ─── Range switching ───────────────────────────────────────────────────────
+function setRunRange(r, btn) {
+  runRange = r;
+  document.querySelectorAll('#run-range-tabs .range-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderRunTab();
+}
+function setFbRange(r, btn) {
+  fbRange = r;
+  document.querySelectorAll('#fb-range-tabs .range-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderFbTab();
+}
+
+// ─── Helpers ───────────────────────────────────────────────────────────────
+const FOOTBALL_TYPES = ['Soccer'];
+const RUN_TYPES = ['Run'];
+const SWIM_TYPES = ['Swim'];
+const HIKE_TYPES = ['Hike'];
+const OTHER_TYPES = ['Crossfit','Workout','WeightTraining','Walk','RockClimbing','Ride'];
+
+function byType(rows, types) { return rows.filter(r => types.includes(r.type)); }
+
+function groupBy(rows, keyFn) {
+  const map = {};
+  rows.forEach(r => {
+    const k = keyFn(r);
+    if (!map[k]) map[k] = [];
+    map[k].push(r);
+  });
+  return map;
+}
+
+function sumDist(rows) { return Math.round(rows.reduce((a,r) => a + r.distKm, 0)*10)/10; }
+function sumTime(rows) { return Math.round(rows.reduce((a,r) => a + r.timeHr, 0)*10)/10; }
+
+function getYears() { return [...new Set(allRows.map(r => r.date ? r.date.getFullYear() : null))].filter(Boolean).sort(); }
+
+function filterByRange(rows, range) {
+  if (range === 'year') return rows;
+  const now = new Date();
+  now.setHours(23,59,59,999);
+  const MS = 86400000;
+  if (range === '7d') return rows.filter(r => r.date && (now - r.date) <= 7*MS);
+  if (range === '4w') return rows.filter(r => r.date && (now - r.date) <= 28*MS);
+  if (range === '12m') return rows.filter(r => r.date && (now - r.date) <= 365*MS);
+  return rows;
+}
+
+function dateKey(d) {
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function getRangeLabelsAndData(rows, range, valueFn) {
+  const ref = new Date();
+
+  if (range === '7d') {
+    const labels = [], data = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(ref); d.setDate(ref.getDate() - i);
+      const key = dateKey(d);
+      labels.push(d.getDate() + '/' + (d.getMonth()+1));
+      const dayRows = rows.filter(r => r.date && dateKey(r.date) === key);
+      data.push(valueFn(dayRows));
+    }
+    return { labels, data };
+  }
+  if (range === '4w') {
+    const labels = [], data = [];
+    for (let i = 3; i >= 0; i--) {
+      const wEnd = new Date(ref); wEnd.setDate(ref.getDate() - i*7);
+      const wStart = new Date(wEnd); wStart.setDate(wEnd.getDate() - 6);
+      wStart.setHours(0,0,0,0); wEnd.setHours(23,59,59,999);
+      labels.push(`${wStart.getDate()}/${wStart.getMonth()+1}`);
+      data.push(valueFn(rows.filter(r => r.date && r.date >= wStart && r.date <= wEnd)));
+    }
+    return { labels, data };
+  }
+  if (range === '12m') {
+    const labels = [], data = [];
+    for (let i = 11; i >= 0; i--) {
+      const d = new Date(ref.getFullYear(), ref.getMonth() - i, 1);
+      const y = d.getFullYear(), m = d.getMonth()+1;
+      labels.push(d.toLocaleDateString('en',{month:'short', year:'2-digit'}));
+      const mRows = rows.filter(r => r.date && r.date.getFullYear()===y && (r.date.getMonth()+1)===m);
+      data.push(valueFn(mRows));
+    }
+    return { labels, data };
+  }
+  // by year
+  const years = getYears();
+  return {
+    labels: years.map(String),
+    data: years.map(y => valueFn(rows.filter(r => r.date && r.date.getFullYear()===y)))
+  };
+}
+
+// ─── Bar chart factory ─────────────────────────────────────────────────────
+function makeBar(id, labels, data, color, unit='') {
+  destroyChart(id);
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  const max = Math.max(...data.filter(v => v > 0));
+  charts[id] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        data,
+        backgroundColor: color + '99',
+        borderColor: color,
+        borderWidth: 1.5,
+        borderRadius: 5,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      layout: { padding: { top: 18 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: false },
+        datalabels: {
+          anchor: 'end',
+          align: 'top',
+          offset: 2,
+          color: '#aaa',
+          font: { size: 9, weight: '600', family: 'Outfit' },
+          formatter: (v) => v > 0 ? (v >= 1000 ? Math.round(v/100)/10 + 'k' : String(v)) : '',
+          display: (ctx) => ctx.dataset.data[ctx.dataIndex] > 0
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { maxRotation: 0, font: { size: 10 } } },
+        y: { display: false, grid: { display: false } }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
+}
+
+function destroyChart(id) {
+  if (charts[id]) { charts[id].destroy(); delete charts[id]; }
+}
+
+// ─── Render all ────────────────────────────────────────────────────────────
+function renderAll() {
+  renderOverallTab();
+  renderRunTab();
+  renderFbTab();
+  renderHikeTab();
+}
+
+// ─── Overall tab ───────────────────────────────────────────────────────────
+function renderOverallTab() {
+  if (!allRows.length) return;
+  const years = getYears();
+
+  // Big stats
+  document.getElementById('ov-total-count').textContent = allRows.length;
+  document.getElementById('ov-total-dist').textContent = Math.round(sumDist(allRows)).toLocaleString();
+  document.getElementById('ov-total-time').textContent = Math.round(sumTime(allRows)).toLocaleString();
+
+  // Workouts per year
+  makeBar('ov-workouts-year', years.map(String),
+    years.map(y => allRows.filter(r => r.date && r.date.getFullYear()===y).length), '#fc4c02');
+
+  // Distance per year
+  makeBar('ov-dist-year', years.map(String),
+    years.map(y => sumDist(allRows.filter(r => r.date && r.date.getFullYear()===y))), '#38bdf8', ' km');
+
+  // Time per year
+  makeBar('ov-time-year', years.map(String),
+    years.map(y => sumTime(allRows.filter(r => r.date && r.date.getFullYear()===y))), '#a78bfa', ' hrs');
+
+  // Running
+  const runs = byType(allRows, RUN_TYPES);
+  makeBar('ov-run-dist-year', years.map(String),
+    years.map(y => sumDist(runs.filter(r => r.date && r.date.getFullYear()===y))), '#fc4c02', ' km');
+  makeBar('ov-run-count-year', years.map(String),
+    years.map(y => runs.filter(r => r.date && r.date.getFullYear()===y).length), '#fc4c02');
+  makeBar('ov-run-time-year', years.map(String),
+    years.map(y => sumTime(runs.filter(r => r.date && r.date.getFullYear()===y))), '#fc4c02', ' hrs');
+
+  // Football
+  const fb = byType(allRows, FOOTBALL_TYPES);
+  makeBar('ov-fb-dist-year', years.map(String),
+    years.map(y => sumDist(fb.filter(r => r.date && r.date.getFullYear()===y))), '#4ade80', ' km');
+  makeBar('ov-fb-count-year', years.map(String),
+    years.map(y => fb.filter(r => r.date && r.date.getFullYear()===y).length), '#4ade80');
+  makeBar('ov-fb-time-year', years.map(String),
+    years.map(y => sumTime(fb.filter(r => r.date && r.date.getFullYear()===y))), '#4ade80', ' hrs');
+
+  // Swim
+  const swim = byType(allRows, SWIM_TYPES);
+  makeBar('ov-swim-count-year', years.map(String),
+    years.map(y => swim.filter(r => r.date && r.date.getFullYear()===y).length), '#38bdf8');
+
+  // Hiking
+  const hikes = byType(allRows, HIKE_TYPES);
+  makeBar('ov-hike-dist-year', years.map(String),
+    years.map(y => sumDist(hikes.filter(r => r.date && r.date.getFullYear()===y))), '#f59e0b', ' km');
+  makeBar('ov-hike-count-year', years.map(String),
+    years.map(y => hikes.filter(r => r.date && r.date.getFullYear()===y).length), '#f59e0b');
+  makeBar('ov-hike-time-year', years.map(String),
+    years.map(y => sumTime(hikes.filter(r => r.date && r.date.getFullYear()===y))), '#f59e0b', ' hrs');
+  makeBar('ov-hike-elev-year', years.map(String),
+    years.map(y => Math.round(hikes.filter(r => r.date && r.date.getFullYear()===y).reduce((a,r)=>a+r.elevM,0))), '#f59e0b', 'm');
+
+  // Other (stacked by type)
+  destroyChart('ov-other-year');
+  const otherTypes = [...new Set(allRows.filter(r => OTHER_TYPES.includes(r.type)).map(r => r.type))];
+  const otherColors = { Crossfit:'#f59e0b', Workout:'#94a3b8', WeightTraining:'#fb923c', Hike:'#a78bfa', Walk:'#6ee7b7', RockClimbing:'#c084fc', Ride:'#f472b6' };
+  const ctx = document.getElementById('ov-other-year');
+  if (ctx) {
+    charts['ov-other-year'] = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: years.map(String),
+        datasets: otherTypes.map(t => ({
+          label: t,
+          data: years.map(y => allRows.filter(r => r.date && r.type===t && r.date.getFullYear()===y).length),
+          backgroundColor: (otherColors[t]||'#888') + '99',
+          borderColor: otherColors[t]||'#888',
+          borderWidth: 1.5, borderRadius: 3, stack: 'a'
+        }))
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: 'bottom', labels: { boxWidth: 8, padding: 10, font: { size: 10 } } }, tooltip: { mode: 'index' } },
+        scales: {
+          x: { grid: { display: false }, ticks: { maxRotation: 0, font: { size: 10 } } },
+          y: { display: false, grid: { display: false } }
+        }
+      }
+    });
+  }
+}
+
+// ─── Run tab ───────────────────────────────────────────────────────────────
+function renderRunTab() {
+  if (!allRows.length) return;
+  const runs = byType(allRows, RUN_TYPES);
+  const filtered = filterByRange(runs, runRange);
+
+  // Stats
+  document.getElementById('run-stat-dist').textContent = sumDist(filtered);
+  document.getElementById('run-stat-count').textContent = filtered.length;
+  document.getElementById('run-stat-time').textContent = sumTime(filtered);
+
+  const rangeLabel = { '7d':'7 Days', '4w':'4 Weeks', '12m':'12 Months', year:'By Year' }[runRange];
+
+  const dist = getRangeLabelsAndData(runs, runRange, sumDist);
+  const count = getRangeLabelsAndData(runs, runRange, r => r.length);
+  const time = getRangeLabelsAndData(runs, runRange, sumTime);
+
+  document.getElementById('run-dist-label').textContent = `Distance (km) — ${rangeLabel}`;
+  document.getElementById('run-count-label').textContent = `Number of Runs — ${rangeLabel}`;
+  document.getElementById('run-time-label').textContent = `Time (hrs) — ${rangeLabel}`;
+
+  makeBar('run-dist-chart', dist.labels, dist.data, '#fc4c02');
+  makeBar('run-count-chart', count.labels, count.data, '#fc4c02');
+  makeBar('run-time-chart', time.labels, time.data, '#fc4c02');
+}
+
+// ─── Football tab ──────────────────────────────────────────────────────────
+function renderFbTab() {
+  if (!allRows.length) return;
+  const fb = byType(allRows, FOOTBALL_TYPES);
+  const filtered = filterByRange(fb, fbRange);
+
+  document.getElementById('fb-stat-dist').textContent = sumDist(filtered);
+  document.getElementById('fb-stat-count').textContent = filtered.length;
+  document.getElementById('fb-stat-time').textContent = sumTime(filtered);
+
+  const rangeLabel = { '7d':'7 Days', '4w':'4 Weeks', '12m':'12 Months', year:'By Year' }[fbRange];
+
+  const dist = getRangeLabelsAndData(fb, fbRange, sumDist);
+  const count = getRangeLabelsAndData(fb, fbRange, r => r.length);
+  const time = getRangeLabelsAndData(fb, fbRange, sumTime);
+
+  document.getElementById('fb-dist-label').textContent = `Distance (km) — ${rangeLabel}`;
+  document.getElementById('fb-count-label').textContent = `Number of Games — ${rangeLabel}`;
+  document.getElementById('fb-time-label').textContent = `Time (hrs) — ${rangeLabel}`;
+
+  makeBar('fb-dist-chart', dist.labels, dist.data, '#4ade80');
+  makeBar('fb-count-chart', count.labels, count.data, '#4ade80');
+  makeBar('fb-time-chart', time.labels, time.data, '#4ade80');
+}
+
+
+// ─── Hike range switching ──────────────────────────────────────────────────
+function setHikeRange(r, btn) {
+  hikeRange = r;
+  document.querySelectorAll('#hike-range-tabs .range-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderHikeTab();
+}
+
+// ─── Hike tab ──────────────────────────────────────────────────────────────
+function renderHikeTab() {
+  if (!allRows.length) return;
+  const hikes = byType(allRows, HIKE_TYPES);
+  const filtered = filterByRange(hikes, hikeRange);
+
+  document.getElementById('hike-stat-dist').textContent = sumDist(filtered);
+  document.getElementById('hike-stat-count').textContent = filtered.length;
+  document.getElementById('hike-stat-time').textContent = sumTime(filtered);
+  document.getElementById('hike-stat-elev').textContent = Math.round(filtered.reduce((a,r)=>a+r.elevM,0)).toLocaleString();
+
+  const rangeLabel = { '7d':'7 Days', '4w':'4 Weeks', '12m':'12 Months', year:'By Year' }[hikeRange];
+
+  const dist = getRangeLabelsAndData(hikes, hikeRange, sumDist);
+  const count = getRangeLabelsAndData(hikes, hikeRange, r => r.length);
+  const time = getRangeLabelsAndData(hikes, hikeRange, sumTime);
+  const elev = getRangeLabelsAndData(hikes, hikeRange, rows => Math.round(rows.reduce((a,r)=>a+r.elevM,0)));
+
+  document.getElementById('hike-dist-label').textContent = `Distance (km) — ${rangeLabel}`;
+  document.getElementById('hike-count-label').textContent = `Number of Hikes — ${rangeLabel}`;
+  document.getElementById('hike-time-label').textContent = `Time (hrs) — ${rangeLabel}`;
+  document.getElementById('hike-elev-label').textContent = `Elevation Gain (m) — ${rangeLabel}`;
+
+  makeBar('hike-dist-chart', dist.labels, dist.data, '#f59e0b');
+  makeBar('hike-count-chart', count.labels, count.data, '#f59e0b');
+  makeBar('hike-time-chart', time.labels, time.data, '#f59e0b');
+  makeBar('hike-elev-chart', elev.labels, elev.data, '#f59e0b');
+}
+
+// ─── Auto-load sample ──────────────────────────────────────────────────────
+function loadSample() {
+  const types = {Run:0.39, Soccer:0.28, Crossfit:0.07, Swim:0.05, Hike:0.065, Ride:0.045, Workout:0.075, WeightTraining:0.013, Walk:0.007, RockClimbing:0.002};
+  const rows = [];
+  const start = new Date('2021-01-01'), end = new Date('2025-12-21');
+  for (let d = new Date(start); d <= end; d.setDate(d.getDate()+1)) {
+    if (Math.random() > 0.45) continue;
+    const r = Math.random(); let cum = 0, type = 'Run';
+    for (const [t,w] of Object.entries(types)) { cum+=w; if(r<cum){type=t;break;} }
+    const distKm = type==='Run'?3+Math.random()*12:type==='Ride'?10+Math.random()*40:type==='Soccer'?5+Math.random()*4:0;
+    const timeHr = distKm>0?(distKm/(type==='Ride'?22+Math.random()*8:9+Math.random()*3)):0.4+Math.random()*0.8;
+    rows.push({
+      type, date: new Date(d), distKm: Math.round(distKm*10)/10,
+      timeHr: Math.round(timeHr*100)/100,
+      hr: 120+Math.random()*40, speedMps: distKm>0?(distKm/3.6)/timeHr:0,
+      elevM: type==='Hike'?200+Math.random()*1200:type==='Run'?10+Math.random()*100:0,
+      year: d.getFullYear(), month: d.getMonth()+1, week: Math.ceil((d-new Date(d.getFullYear(),0,1))/604800000)
+    });
+  }
+  allRows = rows;
+  renderAll();
+}
+
+
+
+// ─── Data source toggle ────────────────────────────────────────────────────
+let dataSource = 'sheet'; // 'sheet' or 'csv'
+
+function setSource(src) {
+  dataSource = src;
+  const btnSheet = document.getElementById('btn-sheet');
+  const btnCsv = document.getElementById('btn-csv');
+  const refreshBtn = document.getElementById('refresh-btn');
+  if (src === 'sheet') {
+    btnSheet.style.background = 'var(--orange)'; btnSheet.style.color = '#fff';
+    btnCsv.style.background = 'transparent'; btnCsv.style.color = 'var(--muted)';
+    refreshBtn.style.opacity = '1'; refreshBtn.style.pointerEvents = 'auto';
+    loadData();
+  } else {
+    btnCsv.style.background = 'var(--orange)'; btnCsv.style.color = '#fff';
+    btnSheet.style.background = 'transparent'; btnSheet.style.color = 'var(--muted)';
+    refreshBtn.style.opacity = '0.3'; refreshBtn.style.pointerEvents = 'none';
+    showCSVModal();
+  }
+}
+
+async function refreshData() {
+  const refreshBtn = document.getElementById('refresh-btn');
+  refreshBtn.style.transform = 'rotate(360deg)';
+  refreshBtn.style.transition = 'transform 0.6s ease';
+  setTimeout(() => { refreshBtn.style.transform = ''; refreshBtn.style.transition = ''; }, 600);
+  await loadData();
+}
+
+// ─── CSV Modal ─────────────────────────────────────────────────────────────
+function showCSVModal() { document.getElementById('csv-modal').classList.remove('hidden'); }
+function hideCSVModal() { document.getElementById('csv-modal').classList.add('hidden'); }
+function handleCSVOverlayClick(e) { if (e.target === document.getElementById('csv-modal')) hideCSVModal(); }
+
+function handleCSVFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  document.getElementById('csvDropBtn').textContent = '📄 ' + file.name;
+  document.getElementById('csvStatusMsg').className = 'status-msg loading';
+  document.getElementById('csvStatusMsg').textContent = 'Parsing…';
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const text = e.target.result;
+      const lines = text.split(/\r?\n/).filter(l => l.trim());
+      const values = lines.map(line => {
+        // Handle quoted CSV fields
+        const result = [];
+        let cur = '', inQ = false;
+        for (let i = 0; i < line.length; i++) {
+          if (line[i] === '"') { inQ = !inQ; }
+          else if (line[i] === ',' && !inQ) { result.push(cur); cur = ''; }
+          else { cur += line[i]; }
+        }
+        result.push(cur);
+        return result;
+      });
+      parseRows(values);
+      document.getElementById('csvStatusMsg').className = 'status-msg ok';
+      document.getElementById('csvStatusMsg').textContent = '✓ Loaded ' + allRows.length + ' activities';
+      setTimeout(hideCSVModal, 1200);
+    } catch(err) {
+      document.getElementById('csvStatusMsg').className = 'status-msg err';
+      document.getElementById('csvStatusMsg').textContent = 'Error: ' + err.message;
+    }
+  };
+  reader.readAsText(file);
+}
+
+
+// ─── AI Insights ───────────────────────────────────────────────────────────
+const aiCache = {};
+
+function buildDataSummary(periodDays = null) {
+  let rows = allRows;
+  if (periodDays) {
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - periodDays);
+    rows = allRows.filter(r => r.date && r.date >= cutoff);
+  }
+
+  if (!rows.length) return 'No activity data for this period.';
+
+  // Group by month
+  const byMonth = {};
+  rows.forEach(r => {
+    const k = r.date.getFullYear() + '-' + String(r.date.getMonth()+1).padStart(2,'0');
+    if (!byMonth[k]) byMonth[k] = [];
+    byMonth[k].push(r);
+  });
+
+  // Group by year
+  const byYear = {};
+  rows.forEach(r => {
+    const y = r.date.getFullYear();
+    if (!byYear[y]) byYear[y] = [];
+    byYear[y].push(r);
+  });
+
+  // Type breakdown
+  const byType = {};
+  rows.forEach(r => {
+    if (!byType[r.type]) byType[r.type] = { count: 0, distKm: 0, timeHr: 0, elevM: 0 };
+    byType[r.type].count++;
+    byType[r.type].distKm += r.distKm;
+    byType[r.type].timeHr += r.timeHr;
+    byType[r.type].elevM += r.elevM || 0;
+  });
+
+  // Run pace data
+  const runs = rows.filter(r => r.type === 'Run' && r.speedMps > 0.5);
+  const avgPace = runs.length ? (runs.reduce((a,r) => a + (1000/r.speedMps/60), 0) / runs.length).toFixed(2) : null;
+
+  let summary = `TODAY'S DATE: ${new Date().toDateString()}\n\n`;
+  summary += `TOTAL PERIOD: ${rows.length} activities, ${Math.round(rows.reduce((a,r)=>a+r.distKm,0))} km, ${Math.round(rows.reduce((a,r)=>a+r.timeHr,0))} hrs\n\n`;
+
+  summary += `ACTIVITY TYPE BREAKDOWN:\n`;
+  Object.entries(byType).sort((a,b)=>b[1].count-a[1].count).forEach(([type, d]) => {
+    summary += `  ${type}: ${d.count} sessions, ${Math.round(d.distKm)} km, ${Math.round(d.timeHr*10)/10} hrs`;
+    if (d.elevM > 0) summary += `, ${Math.round(d.elevM)}m elevation`;
+    summary += '\n';
+  });
+
+  if (avgPace) summary += `\nAVERAGE RUNNING PACE: ${Math.floor(avgPace)}:${String(Math.round((avgPace%1)*60)).padStart(2,'0')} min/km\n`;
+
+  summary += `\nYEAR BY YEAR:\n`;
+  Object.entries(byYear).sort().forEach(([year, yr]) => {
+    const typeCount = {};
+    yr.forEach(r => typeCount[r.type] = (typeCount[r.type]||0)+1);
+    const topType = Object.entries(typeCount).sort((a,b)=>b[1]-a[1])[0];
+    summary += `  ${year}: ${yr.length} activities, ${Math.round(yr.reduce((a,r)=>a+r.distKm,0))} km, ${Math.round(yr.reduce((a,r)=>a+r.timeHr,0))} hrs. Most common: ${topType[0]} (${topType[1]}x)\n`;
+  });
+
+  summary += `\nMONTH BY MONTH (most recent 24):\n`;
+  Object.entries(byMonth).sort().slice(-24).forEach(([month, mo]) => {
+    const typeCount = {};
+    mo.forEach(r => typeCount[r.type] = (typeCount[r.type]||0)+1);
+    summary += `  ${month}: ${mo.length} activities, ${Math.round(mo.reduce((a,r)=>a+r.distKm,0))} km, ${Math.round(mo.reduce((a,r)=>a+r.timeHr,0))} hrs | ${Object.entries(typeCount).map(([t,c])=>t+':'+c).join(', ')}\n`;
+  });
+
+  return summary;
+}
+
+function buildPrompt(type) {
+  const base = buildDataSummary();
+  const recent12m = buildDataSummary(365);
+  const recent3m = buildDataSummary(90);
+  const recent4w = buildDataSummary(28);
+  const recent7d = buildDataSummary(7);
+
+  const prompts = {
+    overall: `Here is my complete training data:\n\n${base}\n\nAs a senior sports data scientist and physician, give me an OVERALL FITNESS ASSESSMENT. In 4-6 sentences, summarise my current fitness level based on the full history. Be specific — reference total volume, activity diversity, and long-term consistency. State clearly what fitness level I am at (recreational, amateur competitive, well-trained, etc.) and why. Be direct and honest.`,
+
+    yearly: `Here is my complete training data:\n\n${base}\n\nGive me a YEAR BY YEAR BREAKDOWN. For each year, cover: total activities/distance/time, which sport dominated, notable patterns or peaks/drops, and how it compared to the previous year. End with an overall multi-year trend — am I improving, plateauing, or declining? Use specific numbers throughout.`,
+
+    '12m': `Here is my training data for the past 12 months:\n\n${recent12m}\n\nFull history for context:\n${base}\n\nAnalyse my PAST 12 MONTHS in detail: monthly breakdown of volume and types, notable peaks and troughs, signs of overtraining or undertraining, running pace or distance progress if available, and how this period compares to the same period the previous year.`,
+
+    '3m': `Here is my training data for the past 3 months:\n\n${recent3m}\n\nAnalyse my LAST 3 MONTHS: what have I been focusing on, is my training load building/maintaining/declining, are there any concerning gaps or injury-risk patterns from sudden load changes? Be specific with dates and numbers.`,
+
+    '4w': `Here is my training data for the past 4 weeks:\n\n${recent4w}\n\nGive a LAST 4 WEEKS analysis with a week by week breakdown. Am I in a build phase, taper, or recovery? Comment on frequency, variety, and any patterns you observe.`,
+
+    '7d': `Here is my training data for the past 7 days:\n\n${recent7d}\n\nFor context, my recent 4-week data:\n${recent4w}\n\nAnalyse my LAST 7 DAYS: what did I do, is this a typical week or an outlier compared to my recent pattern, and what would you recommend for the coming week?`,
+
+    recs: `Here is my complete training data:\n\n${base}\n\nRecent 12 months:\n${recent12m}\n\nAs a sports physician and data scientist, give me exactly 5 KEY RECOMMENDATIONS I should act on in the next 30 days. Each recommendation must:\n1. Reference specific numbers from my data to justify it\n2. Be concrete and actionable (not generic advice)\n3. Consider my sport mix, load patterns, and trends\nNumber each recommendation clearly.`
+  };
+
+  return prompts[type] || prompts.overall;
+}
+
+async function runAnalysis(type, forceRefresh = false) {
+  // Show result card
+  const resultCard = document.getElementById('result-' + type);
+  const bodyEl = document.getElementById('body-' + type);
+  const cacheEl = document.getElementById('cache-' + type);
+  const promptCard = document.getElementById('card-' + type);
+
+  resultCard.classList.add('visible');
+  promptCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Use cache if available and not forcing refresh
+  if (!forceRefresh && aiCache[type]) {
+    bodyEl.innerHTML = formatAIResponse(aiCache[type]);
+    cacheEl.style.display = 'inline';
+    return;
+  }
+
+  if (!allRows.length) {
+    bodyEl.textContent = 'No data loaded yet. Please connect your sheet first.';
+    return;
+  }
+
+  // Show loading
+  cacheEl.style.display = 'none';
+  bodyEl.innerHTML = '<div class="ai-loading"><div class="ai-loading-dot"></div><div class="ai-loading-dot"></div><div class="ai-loading-dot"></div><span>Analysing your data…</span></div>';
+
+  try {
+    const prompt = buildPrompt(type);
+    const res = await fetch('/.netlify/functions/analyse', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt })
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Analysis failed');
+
+    aiCache[type] = data.result;
+    bodyEl.innerHTML = formatAIResponse(data.result);
+    cacheEl.style.display = 'inline';
+
+  } catch(e) {
+    bodyEl.innerHTML = '<span style="color:#f87171">Error: ' + e.message + '</span>';
+  }
+}
+
+function formatAIResponse(text) {
+  // Convert markdown-style headers and bold to HTML
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/^#{1,3}\s*(.+)$/gm, '<h3>$1</h3>')
+    .replace(/^(\d+\.\s)/gm, '<br><strong>$1</strong>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+}
+
+window.addEventListener('DOMContentLoaded', () => { loadData(); });
+</script>
+</body>
+</html>
