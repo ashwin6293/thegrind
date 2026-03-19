@@ -42,6 +42,10 @@
   --run: #fc4c02;
   --football: #4ade80;
   --swim: #38bdf8;
+  --crossfit: #f59e0b;
+  --workout: #94a3b8;
+  --weighttraining: #fb923c;
+  --ride: #f472b6;
   --other: #a78bfa;
   --hike: #f59e0b;
   --tab-h: 64px;
@@ -721,8 +725,8 @@ html, body {
     <div class="range-tabs" id="run-range-tabs">
       <button class="range-tab" onclick="setRunRange('7d',this)">7 Days</button>
       <button class="range-tab" onclick="setRunRange('4w',this)">4 Weeks</button>
-      <button class="range-tab" onclick="setRunRange('12m',this)">12 Months</button>
-      <button class="range-tab active" onclick="setRunRange('year',this)">By Year</button>
+      <button class="range-tab active" onclick="setRunRange('12m',this)">12 Months</button>
+      <button class="range-tab" onclick="setRunRange('year',this)">By Year</button>
     </div>
 
     <div class="mini-stats">
@@ -752,6 +756,10 @@ html, body {
       <div class="chart-label" id="run-time-label">Time (hrs)</div>
       <div class="chart-wrap"><canvas id="run-time-chart"></canvas></div>
     </div>
+    <div class="chart-card" style="--accent:var(--run)">
+      <div class="chart-label" id="run-hr-label">Heart Rate (bpm) — Avg &amp; Max</div>
+      <div class="chart-wrap"><canvas id="run-hr-chart"></canvas></div>
+    </div>
   </div>
 
   <!-- ══ FOOTBALL TAB ══ -->
@@ -761,8 +769,8 @@ html, body {
     <div class="range-tabs" id="fb-range-tabs">
       <button class="range-tab" onclick="setFbRange('7d',this)">7 Days</button>
       <button class="range-tab" onclick="setFbRange('4w',this)">4 Weeks</button>
-      <button class="range-tab" onclick="setFbRange('12m',this)">12 Months</button>
-      <button class="range-tab active" onclick="setFbRange('year',this)">By Year</button>
+      <button class="range-tab active" onclick="setFbRange('12m',this)">12 Months</button>
+      <button class="range-tab" onclick="setFbRange('year',this)">By Year</button>
     </div>
 
     <div class="mini-stats">
@@ -792,6 +800,10 @@ html, body {
       <div class="chart-label" id="fb-time-label">Time (hrs)</div>
       <div class="chart-wrap"><canvas id="fb-time-chart"></canvas></div>
     </div>
+    <div class="chart-card" style="--accent:var(--football)">
+      <div class="chart-label" id="fb-hr-label">Heart Rate (bpm) — Avg &amp; Max</div>
+      <div class="chart-wrap"><canvas id="fb-hr-chart"></canvas></div>
+    </div>
   </div>
 
 
@@ -802,8 +814,8 @@ html, body {
     <div class="range-tabs" id="hike-range-tabs">
       <button class="range-tab" onclick="setHikeRange('7d',this)">7 Days</button>
       <button class="range-tab" onclick="setHikeRange('4w',this)">4 Weeks</button>
-      <button class="range-tab" onclick="setHikeRange('12m',this)">12 Months</button>
-      <button class="range-tab active" onclick="setHikeRange('year',this)">By Year</button>
+      <button class="range-tab active" onclick="setHikeRange('12m',this)">12 Months</button>
+      <button class="range-tab" onclick="setHikeRange('year',this)">By Year</button>
     </div>
 
     <div class="mini-stats" style="grid-template-columns: repeat(4,1fr)">
@@ -841,66 +853,141 @@ html, body {
       <div class="chart-label" id="hike-elev-label">Elevation Gain (m)</div>
       <div class="chart-wrap"><canvas id="hike-elev-chart"></canvas></div>
     </div>
+    <div class="chart-card" style="--accent:var(--hike)">
+      <div class="chart-label" id="hike-hr-label">Heart Rate (bpm) — Avg &amp; Max</div>
+      <div class="chart-wrap"><canvas id="hike-hr-chart"></canvas></div>
+    </div>
+  </div>
+  <!-- ══ SWIMMING TAB ══ -->
+  <div class="tab-page" id="page-swim">
+    <div class="section-heading" style="color:#38bdf8">🏊 SWIMMING</div>
+    <div class="range-tabs" id="swim-range-tabs">
+      <button class="range-tab" onclick="setGenericRange('swim',['Swim'],'#38bdf8','7d',this)">7 Days</button>
+      <button class="range-tab" onclick="setGenericRange('swim',['Swim'],'#38bdf8','4w',this)">4 Weeks</button>
+      <button class="range-tab active" onclick="setGenericRange('swim',['Swim'],'#38bdf8','12m',this)">12 Months</button>
+      <button class="range-tab" onclick="setGenericRange('swim',['Swim'],'#38bdf8','year',this)">By Year</button>
+    </div>
+    <div class="mini-stats">
+      <div class="mini-stat"><div class="mini-stat-val" id="swim-stat-dist">—</div><div class="mini-stat-lbl">km</div></div>
+      <div class="mini-stat"><div class="mini-stat-val" id="swim-stat-count">—</div><div class="mini-stat-lbl">sessions</div></div>
+      <div class="mini-stat"><div class="mini-stat-val" id="swim-stat-time">—</div><div class="mini-stat-lbl">hrs</div></div>
+      <div class="mini-stat"><div class="mini-stat-val" id="swim-stat-avghr">—</div><div class="mini-stat-lbl">avg bpm</div></div>
+    </div>
+    <div class="chart-card" style="--accent:#38bdf8"><div class="chart-label" id="swim-dist-label">Distance (km)</div><div class="chart-wrap"><canvas id="swim-dist-chart"></canvas></div></div>
+    <div class="chart-card" style="--accent:#38bdf8"><div class="chart-label" id="swim-count-label">Sessions</div><div class="chart-wrap"><canvas id="swim-count-chart"></canvas></div></div>
+    <div class="chart-card" style="--accent:#38bdf8"><div class="chart-label" id="swim-time-label">Time (hrs)</div><div class="chart-wrap"><canvas id="swim-time-chart"></canvas></div></div>
+    <div class="chart-card" style="--accent:#38bdf8"><div class="chart-label" id="swim-hr-label">Heart Rate (bpm)</div><div class="chart-wrap"><canvas id="swim-hr-chart"></canvas></div></div>
   </div>
 
+  <!-- ══ CROSSFIT TAB ══ -->
+  <div class="tab-page" id="page-crossfit">
+    <div class="section-heading" style="color:#f59e0b">🏋️ CROSSFIT</div>
+    <div class="range-tabs" id="crossfit-range-tabs">
+      <button class="range-tab" onclick="setGenericRange('crossfit',['Crossfit'],'#f59e0b','7d',this)">7 Days</button>
+      <button class="range-tab" onclick="setGenericRange('crossfit',['Crossfit'],'#f59e0b','4w',this)">4 Weeks</button>
+      <button class="range-tab active" onclick="setGenericRange('crossfit',['Crossfit'],'#f59e0b','12m',this)">12 Months</button>
+      <button class="range-tab" onclick="setGenericRange('crossfit',['Crossfit'],'#f59e0b','year',this)">By Year</button>
+    </div>
+    <div class="mini-stats">
+      <div class="mini-stat"><div class="mini-stat-val" id="crossfit-stat-dist">—</div><div class="mini-stat-lbl">km</div></div>
+      <div class="mini-stat"><div class="mini-stat-val" id="crossfit-stat-count">—</div><div class="mini-stat-lbl">sessions</div></div>
+      <div class="mini-stat"><div class="mini-stat-val" id="crossfit-stat-time">—</div><div class="mini-stat-lbl">hrs</div></div>
+      <div class="mini-stat"><div class="mini-stat-val" id="crossfit-stat-avghr">—</div><div class="mini-stat-lbl">avg bpm</div></div>
+    </div>
+    <div class="chart-card" style="--accent:#f59e0b"><div class="chart-label" id="crossfit-dist-label">Distance (km)</div><div class="chart-wrap"><canvas id="crossfit-dist-chart"></canvas></div></div>
+    <div class="chart-card" style="--accent:#f59e0b"><div class="chart-label" id="crossfit-count-label">Sessions</div><div class="chart-wrap"><canvas id="crossfit-count-chart"></canvas></div></div>
+    <div class="chart-card" style="--accent:#f59e0b"><div class="chart-label" id="crossfit-time-label">Time (hrs)</div><div class="chart-wrap"><canvas id="crossfit-time-chart"></canvas></div></div>
+    <div class="chart-card" style="--accent:#f59e0b"><div class="chart-label" id="crossfit-hr-label">Heart Rate (bpm)</div><div class="chart-wrap"><canvas id="crossfit-hr-chart"></canvas></div></div>
+  </div>
+
+  <!-- ══ WORKOUT TAB ══ -->
+  <div class="tab-page" id="page-workout">
+    <div class="section-heading" style="color:#94a3b8">💪 WORKOUT</div>
+    <div class="range-tabs" id="workout-range-tabs">
+      <button class="range-tab" onclick="setGenericRange('workout',['Workout'],'#94a3b8','7d',this)">7 Days</button>
+      <button class="range-tab" onclick="setGenericRange('workout',['Workout'],'#94a3b8','4w',this)">4 Weeks</button>
+      <button class="range-tab active" onclick="setGenericRange('workout',['Workout'],'#94a3b8','12m',this)">12 Months</button>
+      <button class="range-tab" onclick="setGenericRange('workout',['Workout'],'#94a3b8','year',this)">By Year</button>
+    </div>
+    <div class="mini-stats">
+      <div class="mini-stat"><div class="mini-stat-val" id="workout-stat-dist">—</div><div class="mini-stat-lbl">km</div></div>
+      <div class="mini-stat"><div class="mini-stat-val" id="workout-stat-count">—</div><div class="mini-stat-lbl">sessions</div></div>
+      <div class="mini-stat"><div class="mini-stat-val" id="workout-stat-time">—</div><div class="mini-stat-lbl">hrs</div></div>
+      <div class="mini-stat"><div class="mini-stat-val" id="workout-stat-avghr">—</div><div class="mini-stat-lbl">avg bpm</div></div>
+    </div>
+    <div class="chart-card" style="--accent:#94a3b8"><div class="chart-label" id="workout-dist-label">Distance (km)</div><div class="chart-wrap"><canvas id="workout-dist-chart"></canvas></div></div>
+    <div class="chart-card" style="--accent:#94a3b8"><div class="chart-label" id="workout-count-label">Sessions</div><div class="chart-wrap"><canvas id="workout-count-chart"></canvas></div></div>
+    <div class="chart-card" style="--accent:#94a3b8"><div class="chart-label" id="workout-time-label">Time (hrs)</div><div class="chart-wrap"><canvas id="workout-time-chart"></canvas></div></div>
+    <div class="chart-card" style="--accent:#94a3b8"><div class="chart-label" id="workout-hr-label">Heart Rate (bpm)</div><div class="chart-wrap"><canvas id="workout-hr-chart"></canvas></div></div>
+  </div>
+
+  <!-- ══ WEIGHT TRAINING TAB ══ -->
+  <div class="tab-page" id="page-weighttraining">
+    <div class="section-heading" style="color:#fb923c">🏋️ WEIGHT TRAINING</div>
+    <div class="range-tabs" id="weighttraining-range-tabs">
+      <button class="range-tab" onclick="setGenericRange('weighttraining',['WeightTraining'],'#fb923c','7d',this)">7 Days</button>
+      <button class="range-tab" onclick="setGenericRange('weighttraining',['WeightTraining'],'#fb923c','4w',this)">4 Weeks</button>
+      <button class="range-tab active" onclick="setGenericRange('weighttraining',['WeightTraining'],'#fb923c','12m',this)">12 Months</button>
+      <button class="range-tab" onclick="setGenericRange('weighttraining',['WeightTraining'],'#fb923c','year',this)">By Year</button>
+    </div>
+    <div class="mini-stats">
+      <div class="mini-stat"><div class="mini-stat-val" id="weighttraining-stat-dist">—</div><div class="mini-stat-lbl">km</div></div>
+      <div class="mini-stat"><div class="mini-stat-val" id="weighttraining-stat-count">—</div><div class="mini-stat-lbl">sessions</div></div>
+      <div class="mini-stat"><div class="mini-stat-val" id="weighttraining-stat-time">—</div><div class="mini-stat-lbl">hrs</div></div>
+      <div class="mini-stat"><div class="mini-stat-val" id="weighttraining-stat-avghr">—</div><div class="mini-stat-lbl">avg bpm</div></div>
+    </div>
+    <div class="chart-card" style="--accent:#fb923c"><div class="chart-label" id="weighttraining-dist-label">Distance (km)</div><div class="chart-wrap"><canvas id="weighttraining-dist-chart"></canvas></div></div>
+    <div class="chart-card" style="--accent:#fb923c"><div class="chart-label" id="weighttraining-count-label">Sessions</div><div class="chart-wrap"><canvas id="weighttraining-count-chart"></canvas></div></div>
+    <div class="chart-card" style="--accent:#fb923c"><div class="chart-label" id="weighttraining-time-label">Time (hrs)</div><div class="chart-wrap"><canvas id="weighttraining-time-chart"></canvas></div></div>
+    <div class="chart-card" style="--accent:#fb923c"><div class="chart-label" id="weighttraining-hr-label">Heart Rate (bpm)</div><div class="chart-wrap"><canvas id="weighttraining-hr-chart"></canvas></div></div>
+  </div>
+
+  <!-- ══ RIDE TAB ══ -->
+  <div class="tab-page" id="page-ride">
+    <div class="section-heading" style="color:#f472b6">🚴 CYCLING</div>
+    <div class="range-tabs" id="ride-range-tabs">
+      <button class="range-tab" onclick="setGenericRange('ride',['Ride'],'#f472b6','7d',this)">7 Days</button>
+      <button class="range-tab" onclick="setGenericRange('ride',['Ride'],'#f472b6','4w',this)">4 Weeks</button>
+      <button class="range-tab active" onclick="setGenericRange('ride',['Ride'],'#f472b6','12m',this)">12 Months</button>
+      <button class="range-tab" onclick="setGenericRange('ride',['Ride'],'#f472b6','year',this)">By Year</button>
+    </div>
+    <div class="mini-stats">
+      <div class="mini-stat"><div class="mini-stat-val" id="ride-stat-dist">—</div><div class="mini-stat-lbl">km</div></div>
+      <div class="mini-stat"><div class="mini-stat-val" id="ride-stat-count">—</div><div class="mini-stat-lbl">sessions</div></div>
+      <div class="mini-stat"><div class="mini-stat-val" id="ride-stat-time">—</div><div class="mini-stat-lbl">hrs</div></div>
+      <div class="mini-stat"><div class="mini-stat-val" id="ride-stat-avghr">—</div><div class="mini-stat-lbl">avg bpm</div></div>
+    </div>
+    <div class="chart-card" style="--accent:#f472b6"><div class="chart-label" id="ride-dist-label">Distance (km)</div><div class="chart-wrap"><canvas id="ride-dist-chart"></canvas></div></div>
+    <div class="chart-card" style="--accent:#f472b6"><div class="chart-label" id="ride-count-label">Sessions</div><div class="chart-wrap"><canvas id="ride-count-chart"></canvas></div></div>
+    <div class="chart-card" style="--accent:#f472b6"><div class="chart-label" id="ride-time-label">Time (hrs)</div><div class="chart-wrap"><canvas id="ride-time-chart"></canvas></div></div>
+    <div class="chart-card" style="--accent:#f472b6"><div class="chart-label" id="ride-hr-label">Heart Rate (bpm)</div><div class="chart-wrap"><canvas id="ride-hr-chart"></canvas></div></div>
+  </div>
 
   <!-- ══ AI TAB ══ -->
   <div class="tab-page" id="page-ai">
     <div class="section-heading" style="color:#a78bfa">🤖 AI INSIGHTS</div>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6">Tap any analysis below to generate AI-powered insights from your training data. Results are cached — tap ↻ to re-run.</p>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6">Tap any analysis to generate AI-powered insights including heart rate data. Results are cached — tap ↻ to refresh.</p>
 
-    <!-- Overall Fitness Summary -->
-    <div class="ai-prompt-card" id="card-overall" onclick="runAnalysis('overall')">
-      <div class="ai-prompt-title">🏅 Overall Fitness Assessment <span style="font-size:18px">›</span></div>
-      <div class="ai-prompt-desc">Full career summary, current fitness level, and what your data says about you as an athlete.</div>
+    <!-- Last Month -->
+    <div class="ai-prompt-card" id="card-1m" onclick="runAnalysis('1m')">
+      <div class="ai-prompt-title">📅 Last Month Analysis <span style="font-size:18px">›</span></div>
+      <div class="ai-prompt-desc">Every session with HR data, load analysis, and clinical observations for the past month.</div>
     </div>
-    <div class="ai-result-card" id="result-overall">
+    <div class="ai-result-card" id="result-1m">
       <div class="ai-result-header">
-        <div class="ai-result-title">🏅 OVERALL FITNESS</div>
+        <div class="ai-result-title">📅 LAST MONTH</div>
         <div style="display:flex;gap:8px;align-items:center">
-          <span class="cached-badge" id="cache-overall" style="display:none">cached</span>
-          <button class="ai-refresh-btn" onclick="runAnalysis('overall', true)">↻</button>
+          <span class="cached-badge" id="cache-1m" style="display:none">cached</span>
+          <button class="ai-refresh-btn" onclick="runAnalysis('1m', true)">↻</button>
         </div>
       </div>
-      <div class="ai-result-body" id="body-overall"></div>
+      <div class="ai-result-body" id="body-1m"></div>
     </div>
 
-    <!-- Year by Year -->
-    <div class="ai-prompt-card" id="card-yearly" onclick="runAnalysis('yearly')">
-      <div class="ai-prompt-title">📅 Year by Year Breakdown <span style="font-size:18px">›</span></div>
-      <div class="ai-prompt-desc">How each year compared — volume, sport focus, trends and progression over time.</div>
-    </div>
-    <div class="ai-result-card" id="result-yearly">
-      <div class="ai-result-header">
-        <div class="ai-result-title">📅 YEAR BY YEAR</div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <span class="cached-badge" id="cache-yearly" style="display:none">cached</span>
-          <button class="ai-refresh-btn" onclick="runAnalysis('yearly', true)">↻</button>
-        </div>
-      </div>
-      <div class="ai-result-body" id="body-yearly"></div>
-    </div>
-
-    <!-- Past 12 months -->
-    <div class="ai-prompt-card" id="card-12m" onclick="runAnalysis('12m')">
-      <div class="ai-prompt-title">📆 Past 12 Months <span style="font-size:18px">›</span></div>
-      <div class="ai-prompt-desc">Monthly breakdown, pace trends, load patterns vs same period last year.</div>
-    </div>
-    <div class="ai-result-card" id="result-12m">
-      <div class="ai-result-header">
-        <div class="ai-result-title">📆 PAST 12 MONTHS</div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <span class="cached-badge" id="cache-12m" style="display:none">cached</span>
-          <button class="ai-refresh-btn" onclick="runAnalysis('12m', true)">↻</button>
-        </div>
-      </div>
-      <div class="ai-result-body" id="body-12m"></div>
-    </div>
-
-    <!-- Last 3 months -->
+    <!-- Last 3 Months -->
     <div class="ai-prompt-card" id="card-3m" onclick="runAnalysis('3m')">
-      <div class="ai-prompt-title">🗓️ Last 3 Months <span style="font-size:18px">›</span></div>
-      <div class="ai-prompt-desc">Recent focus areas, training load trend, injury risk patterns.</div>
+      <div class="ai-prompt-title">🗓️ Last 3 Months Analysis <span style="font-size:18px">›</span></div>
+      <div class="ai-prompt-desc">Trends, heart rate patterns, load changes and injury risk over the past 3 months.</div>
     </div>
     <div class="ai-result-card" id="result-3m">
       <div class="ai-result-header">
@@ -913,52 +1000,24 @@ html, body {
       <div class="ai-result-body" id="body-3m"></div>
     </div>
 
-    <!-- Last 4 weeks -->
-    <div class="ai-prompt-card" id="card-4w" onclick="runAnalysis('4w')">
-      <div class="ai-prompt-title">📅 Last 4 Weeks <span style="font-size:18px">›</span></div>
-      <div class="ai-prompt-desc">Week by week breakdown — build, taper or recovery phase?</div>
+    <!-- Full Analysis from Sheet -->
+    <div class="ai-prompt-card" id="card-full" onclick="loadFullAnalysis()">
+      <div class="ai-prompt-title">📋 Full Analysis <span style="font-size:18px">›</span></div>
+      <div class="ai-prompt-desc">Reads your full written analysis from a separate Google Sheet. Update the sheet anytime to refresh.</div>
     </div>
-    <div class="ai-result-card" id="result-4w">
+    <div class="ai-result-card" id="result-full">
       <div class="ai-result-header">
-        <div class="ai-result-title">📅 LAST 4 WEEKS</div>
+        <div class="ai-result-title">📋 FULL ANALYSIS</div>
         <div style="display:flex;gap:8px;align-items:center">
-          <span class="cached-badge" id="cache-4w" style="display:none">cached</span>
-          <button class="ai-refresh-btn" onclick="runAnalysis('4w', true)">↻</button>
+          <span class="cached-badge" id="cache-full" style="display:none">cached</span>
+          <button class="ai-refresh-btn" onclick="loadFullAnalysis(true)">↻</button>
         </div>
       </div>
-      <div class="ai-result-body" id="body-4w"></div>
-    </div>
-
-    <!-- Last 7 days -->
-    <div class="ai-prompt-card" id="card-7d" onclick="runAnalysis('7d')">
-      <div class="ai-prompt-title">🗓️ Last 7 Days <span style="font-size:18px">›</span></div>
-      <div class="ai-prompt-desc">This week's activity, whether it's typical, and what to do next.</div>
-    </div>
-    <div class="ai-result-card" id="result-7d">
-      <div class="ai-result-header">
-        <div class="ai-result-title">🗓️ LAST 7 DAYS</div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <span class="cached-badge" id="cache-7d" style="display:none">cached</span>
-          <button class="ai-refresh-btn" onclick="runAnalysis('7d', true)">↻</button>
-        </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:6px">Analysis Sheet ID</label>
+        <input id="analysisSheetId" type="text" placeholder="Paste your analysis Sheet ID here…" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:8px;font-family:Outfit,sans-serif;font-size:13px" autocorrect="off" spellcheck="false">
       </div>
-      <div class="ai-result-body" id="body-7d"></div>
-    </div>
-
-    <!-- Key Recommendations -->
-    <div class="ai-prompt-card" id="card-recs" onclick="runAnalysis('recs')">
-      <div class="ai-prompt-title">🎯 Key Recommendations <span style="font-size:18px">›</span></div>
-      <div class="ai-prompt-desc">5 specific, data-driven actions to take in the next 30 days.</div>
-    </div>
-    <div class="ai-result-card" id="result-recs">
-      <div class="ai-result-header">
-        <div class="ai-result-title">🎯 RECOMMENDATIONS</div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <span class="cached-badge" id="cache-recs" style="display:none">cached</span>
-          <button class="ai-refresh-btn" onclick="runAnalysis('recs', true)">↻</button>
-        </div>
-      </div>
-      <div class="ai-result-body" id="body-recs"></div>
+      <div class="ai-result-body" id="body-full"></div>
     </div>
 
   </div>
@@ -983,6 +1042,26 @@ html, body {
     <span class="tab-icon">🥾</span>
     <span class="tab-label">Hike</span>
   </button>
+  <button class="tab-btn" onclick="switchTab('swim',this)">
+    <span class="tab-icon">🏊</span>
+    <span class="tab-label">Swim</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('crossfit',this)">
+    <span class="tab-icon">🏋️</span>
+    <span class="tab-label">Crossfit</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('workout',this)">
+    <span class="tab-icon">💪</span>
+    <span class="tab-label">Workout</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('weighttraining',this)">
+    <span class="tab-icon">🏋️</span>
+    <span class="tab-label">Weights</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('ride',this)">
+    <span class="tab-icon">🚴</span>
+    <span class="tab-label">Ride</span>
+  </button>
   <button class="tab-btn" onclick="switchTab('ai',this)">
     <span class="tab-icon">🤖</span>
     <span class="tab-label">AI</span>
@@ -993,9 +1072,14 @@ html, body {
 // ─── Global state ──────────────────────────────────────────────────────────
 let allRows = [];
 let charts = {};
-let runRange = 'year';
-let fbRange = 'year';
-let hikeRange = 'year';
+let runRange = '12m';
+let fbRange = '12m';
+let hikeRange = '12m';
+let swimRange = '12m';
+let crossfitRange = '12m';
+let workoutRange = '12m';
+let weighttrainingRange = '12m';
+let rideRange = '12m';
 
 // ─── Chart defaults ────────────────────────────────────────────────────────
 Chart.register(ChartDataLabels);
@@ -1242,6 +1326,11 @@ function renderAll() {
   renderRunTab();
   renderFbTab();
   renderHikeTab();
+  renderGenericTab('swim', ['Swim'], '#38bdf8', swimRange);
+  renderGenericTab('crossfit', ['Crossfit'], '#f59e0b', crossfitRange);
+  renderGenericTab('workout', ['Workout'], '#94a3b8', workoutRange);
+  renderGenericTab('weighttraining', ['WeightTraining'], '#fb923c', weighttrainingRange);
+  renderGenericTab('ride', ['Ride'], '#f472b6', rideRange);
 }
 
 // ─── Overall tab ───────────────────────────────────────────────────────────
@@ -1351,9 +1440,13 @@ function renderRunTab() {
   document.getElementById('run-count-label').textContent = `Number of Runs — ${rangeLabel}`;
   document.getElementById('run-time-label').textContent = `Time (hrs) — ${rangeLabel}`;
 
+  const runAvgHR = getRangeLabelsAndData(runs, runRange, avgHR);
+  const runMaxHR = getRangeLabelsAndData(runs, runRange, maxHR);
+  document.getElementById('run-hr-label').textContent = `Heart Rate (bpm) — Avg & Max — ${rangeLabel}`;
   makeBar('run-dist-chart', dist.labels, dist.data, '#fc4c02');
   makeBar('run-count-chart', count.labels, count.data, '#fc4c02');
   makeBar('run-time-chart', time.labels, time.data, '#fc4c02');
+  makeHRCombo('run-hr-chart', runAvgHR.labels, runAvgHR.data, runMaxHR.data, '#fc4c02');
 }
 
 // ─── Football tab ──────────────────────────────────────────────────────────
@@ -1376,9 +1469,13 @@ function renderFbTab() {
   document.getElementById('fb-count-label').textContent = `Number of Games — ${rangeLabel}`;
   document.getElementById('fb-time-label').textContent = `Time (hrs) — ${rangeLabel}`;
 
+  const fbAvgHR = getRangeLabelsAndData(fb, fbRange, avgHR);
+  const fbMaxHR = getRangeLabelsAndData(fb, fbRange, maxHR);
+  document.getElementById('fb-hr-label').textContent = `Heart Rate (bpm) — Avg & Max — ${rangeLabel}`;
   makeBar('fb-dist-chart', dist.labels, dist.data, '#4ade80');
   makeBar('fb-count-chart', count.labels, count.data, '#4ade80');
   makeBar('fb-time-chart', time.labels, time.data, '#4ade80');
+  makeHRCombo('fb-hr-chart', fbAvgHR.labels, fbAvgHR.data, fbMaxHR.data, '#4ade80');
 }
 
 
@@ -1413,10 +1510,123 @@ function renderHikeTab() {
   document.getElementById('hike-time-label').textContent = `Time (hrs) — ${rangeLabel}`;
   document.getElementById('hike-elev-label').textContent = `Elevation Gain (m) — ${rangeLabel}`;
 
+  const hikeAvgHR = getRangeLabelsAndData(hikes, hikeRange, avgHR);
+  const hikeMaxHR = getRangeLabelsAndData(hikes, hikeRange, maxHR);
+  document.getElementById('hike-hr-label').textContent = `Heart Rate (bpm) — Avg & Max — ${rangeLabel}`;
   makeBar('hike-dist-chart', dist.labels, dist.data, '#f59e0b');
   makeBar('hike-count-chart', count.labels, count.data, '#f59e0b');
   makeBar('hike-time-chart', time.labels, time.data, '#f59e0b');
   makeBar('hike-elev-chart', elev.labels, elev.data, '#f59e0b');
+  makeHRCombo('hike-hr-chart', hikeAvgHR.labels, hikeAvgHR.data, hikeMaxHR.data, '#f59e0b');
+}
+
+
+// ─── HR Combo chart (bar=avg, line=max) ───────────────────────────────────
+function makeHRCombo(id, labels, avgData, maxData, color) {
+  destroyChart(id);
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  charts[id] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Avg HR',
+          data: avgData,
+          backgroundColor: color + '88',
+          borderColor: color,
+          borderWidth: 1.5,
+          borderRadius: 4,
+          borderSkipped: false,
+          order: 2
+        },
+        {
+          label: 'Max HR',
+          data: maxData,
+          type: 'line',
+          borderColor: '#f87171',
+          backgroundColor: 'transparent',
+          borderWidth: 2,
+          pointRadius: 3,
+          pointBackgroundColor: '#f87171',
+          tension: 0.3,
+          order: 1,
+          datalabels: { display: false }
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      layout: { padding: { top: 18 } },
+      plugins: {
+        legend: { display: true, position: 'bottom', labels: { boxWidth: 8, padding: 10, font: { size: 10 } } },
+        tooltip: { enabled: false },
+        datalabels: {
+          anchor: 'end', align: 'top', offset: 2,
+          color: '#aaa', font: { size: 9, weight: '600', family: 'Outfit' },
+          formatter: v => v > 0 ? String(v) : '',
+          display: ctx => ctx.datasetIndex === 0 && ctx.dataset.data[ctx.dataIndex] > 0
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { maxRotation: 0, font: { size: 10 } } },
+        y: { display: false }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
+}
+
+function avgHR(rows) {
+  const valid = rows.filter(r => r.hr > 0);
+  return valid.length ? Math.round(valid.reduce((a,r)=>a+r.hr,0)/valid.length) : 0;
+}
+function maxHR(rows) {
+  const valid = rows.filter(r => r.hr > 0);
+  return valid.length ? Math.round(Math.max(...valid.map(r=>r.hr))) : 0;
+}
+
+// ─── Generic activity tab renderer ────────────────────────────────────────
+function renderGenericTab(tid, types, color, range) {
+  if (!allRows.length) return;
+  const acts = byType(allRows, types);
+  const filtered = filterByRange(acts, range);
+
+  const distEl = document.getElementById(tid+'-stat-dist');
+  const countEl = document.getElementById(tid+'-stat-count');
+  const timeEl = document.getElementById(tid+'-stat-time');
+  const hrEl = document.getElementById(tid+'-stat-avghr');
+  if (distEl) distEl.textContent = sumDist(filtered);
+  if (countEl) countEl.textContent = filtered.length;
+  if (timeEl) timeEl.textContent = sumTime(filtered);
+  if (hrEl) hrEl.textContent = avgHR(filtered) || '—';
+
+  const rangeLabel = { '7d':'7 Days','4w':'4 Weeks','12m':'12 Months',year:'By Year' }[range];
+  const setLabel = (id, t) => { const el = document.getElementById(id); if(el) el.textContent = t + ' — ' + rangeLabel; };
+  setLabel(tid+'-dist-label', 'Distance (km)');
+  setLabel(tid+'-count-label', 'Sessions');
+  setLabel(tid+'-time-label', 'Time (hrs)');
+  setLabel(tid+'-hr-label', 'Heart Rate (bpm) — Avg & Max');
+
+  const dist = getRangeLabelsAndData(acts, range, sumDist);
+  const count = getRangeLabelsAndData(acts, range, r => r.length);
+  const time = getRangeLabelsAndData(acts, range, sumTime);
+  const avgHRd = getRangeLabelsAndData(acts, range, avgHR);
+  const maxHRd = getRangeLabelsAndData(acts, range, maxHR);
+
+  makeBar(tid+'-dist-chart', dist.labels, dist.data, color);
+  makeBar(tid+'-count-chart', count.labels, count.data, color);
+  makeBar(tid+'-time-chart', time.labels, time.data, color);
+  makeHRCombo(tid+'-hr-chart', avgHRd.labels, avgHRd.data, maxHRd.data, color);
+}
+
+// ─── Generic range setter ─────────────────────────────────────────────────
+function setGenericRange(tid, types, color, r, btn) {
+  window[tid+'Range'] = r;
+  document.querySelectorAll('#'+tid+'-range-tabs .range-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGenericTab(tid, types, color, r);
 }
 
 // ─── Auto-load sample ──────────────────────────────────────────────────────
@@ -1516,6 +1726,45 @@ function handleCSVFile(event) {
 
 // ─── AI Insights ───────────────────────────────────────────────────────────
 const aiCache = {};
+let fullAnalysisCache = null;
+
+async function loadFullAnalysis(forceRefresh = false) {
+  const resultCard = document.getElementById('result-full');
+  const bodyEl = document.getElementById('body-full');
+  const cacheEl = document.getElementById('cache-full');
+  resultCard.classList.add('visible');
+
+  if (!forceRefresh && fullAnalysisCache) {
+    bodyEl.innerHTML = formatAIResponse(fullAnalysisCache);
+    cacheEl.style.display = 'inline';
+    return;
+  }
+
+  const sheetId = document.getElementById('analysisSheetId').value.trim();
+  if (!sheetId) {
+    bodyEl.innerHTML = '<span style="color:#f87171">Please paste your Analysis Sheet ID above.</span>';
+    return;
+  }
+
+  cacheEl.style.display = 'none';
+  bodyEl.innerHTML = '<div class="ai-loading"><div class="ai-loading-dot"></div><div class="ai-loading-dot"></div><div class="ai-loading-dot"></div><span>Loading analysis from sheet…</span></div>';
+
+  const SHEETS_API_KEY = 'AIzaSyAo9h6eH9kZkOf_-ocE49c5aKPD7PYeA9U';
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Sheet1?key=${SHEETS_API_KEY}`;
+
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error?.message || 'Failed to load sheet');
+    const text = data.values?.[0]?.[0] || data.values?.[1]?.[0] || '';
+    if (!text) throw new Error('No text found in the sheet. Make sure your analysis is in cell A1 or A2.');
+    fullAnalysisCache = text;
+    bodyEl.innerHTML = formatAIResponse(text);
+    cacheEl.style.display = 'inline';
+  } catch(e) {
+    bodyEl.innerHTML = '<span style="color:#f87171">Error: ' + e.message + '</span>';
+  }
+}
 
 function buildDataSummary(periodDays = null) {
   let rows = allRows;
@@ -1604,29 +1853,16 @@ function buildDataSummary(periodDays = null) {
 }
 
 function buildPrompt(type) {
-  const base = buildDataSummary();
-  const recent12m = buildDataSummary(365);
+  const recent1m = buildDataSummary(31);
   const recent3m = buildDataSummary(90);
-  const recent4w = buildDataSummary(28);
-  const recent7d = buildDataSummary(7);
 
   const prompts = {
-    overall: `Here is my complete training data:\n\n${base}\n\nAs a senior sports data scientist and physician, give me an OVERALL FITNESS ASSESSMENT. In 4-6 sentences, summarise my current fitness level based on the full history. Be specific — reference total volume, activity diversity, and long-term consistency. State clearly what fitness level I am at (recreational, amateur competitive, well-trained, etc.) and why. Be direct and honest.`,
+    '1m': `Here is my training data for the past month — including individual sessions with heart rate data:\n\n${recent1m}\n\nAnalyse my LAST MONTH in detail as a senior sports physician and data scientist. Cover:\n1. Every session — type, distance, duration, heart rate (avg and max)\n2. Overall load: total distance, time, sessions by sport\n3. Heart rate trends — was effort appropriate? Any sessions with unusually high or low HR?\n4. Any gaps or rest days — were they earned or concerning?\n5. How does this month's volume and HR compare to what you'd expect for an athlete at this level?\n6. Clinical observations — any red flags or positive signs?\nUse exact dates and numbers. Do not generalise.`,
 
-    yearly: `Here is my complete training data:\n\n${base}\n\nGive me a YEAR BY YEAR BREAKDOWN. For each year, cover: total activities/distance/time, which sport dominated, notable patterns or peaks/drops, and how it compared to the previous year. End with an overall multi-year trend — am I improving, plateauing, or declining? Use specific numbers throughout.`,
-
-    '12m': `Here is my training data for the past 12 months:\n\n${recent12m}\n\nFull history for context:\n${base}\n\nAnalyse my PAST 12 MONTHS in detail: monthly breakdown of volume and types, notable peaks and troughs, signs of overtraining or undertraining, running pace or distance progress if available, and how this period compares to the same period the previous year.`,
-
-    '3m': `Here is my training data for the past 3 months:\n\n${recent3m}\n\nAnalyse my LAST 3 MONTHS: what have I been focusing on, is my training load building/maintaining/declining, are there any concerning gaps or injury-risk patterns from sudden load changes? Be specific with dates and numbers.`,
-
-    '4w': `Here is my training data for the past 4 weeks:\n\n${recent4w}\n\nGive a LAST 4 WEEKS analysis with a week by week breakdown. Am I in a build phase, taper, or recovery? Comment on frequency, variety, and any patterns you observe.`,
-
-    '7d': `Here is my training data for the past 7 days:\n\n${recent7d}\n\nFor context, my recent 4-week data:\n${recent4w}\n\nAnalyse my LAST 7 DAYS: what did I do, is this a typical week or an outlier compared to my recent pattern, and what would you recommend for the coming week?`,
-
-    recs: `Here is my complete training data:\n\n${base}\n\nRecent 12 months:\n${recent12m}\n\nAs a sports physician and data scientist, give me exactly 5 KEY RECOMMENDATIONS I should act on in the next 30 days. Each recommendation must:\n1. Reference specific numbers from my data to justify it\n2. Be concrete and actionable (not generic advice)\n3. Consider my sport mix, load patterns, and trends\nNumber each recommendation clearly.`
+    '3m': `Here is my training data for the past 3 months — including individual sessions with heart rate data:\n\n${recent3m}\n\nAnalyse my LAST 3 MONTHS as a senior sports physician and data scientist. Cover:\n1. Month by month summary — volume, sport breakdown, heart rate averages\n2. Trends in training load — building, maintaining, or declining?\n3. Heart rate analysis — avg HR and max HR trends across each sport. Any cardiovascular adaptation signs?\n4. Injury risk indicators — sudden load spikes, insufficient recovery, muscular imbalance from sport distribution\n5. How does this period set me up for the next 3 months?\n6. Clinical observations and 3 specific data-driven recommendations.\nUse exact dates and numbers throughout.`,
   };
 
-  return prompts[type] || prompts.overall;
+  return prompts[type] || prompts['3m'];
 }
 
 async function runAnalysis(type, forceRefresh = false) {
