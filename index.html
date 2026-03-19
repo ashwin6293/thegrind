@@ -289,10 +289,10 @@ html, body {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 14px;
-  padding: 16px 14px;
+  padding: 16px 14px 12px;
   margin-bottom: 12px;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .chart-card::before {
@@ -312,7 +312,7 @@ html, body {
   margin-bottom: 12px;
 }
 
-.chart-wrap { position: relative; height: 180px; }
+.chart-wrap { position: relative; height: 190px; overflow: hidden; }
 .chart-wrap.short { height: 140px; }
 
 /* ── Time range tabs ── */
@@ -383,11 +383,20 @@ html, body {
   background: var(--surface);
   border-top: 1px solid var(--border);
   display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
   z-index: 100;
+  scroll-snap-type: x mandatory;
 }
 
+.bottom-tabs::-webkit-scrollbar { display: none; }
+
 .tab-btn {
-  flex: 1;
+  flex: 0 0 20vw;
+  min-width: 64px;
+  max-width: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -400,6 +409,8 @@ html, body {
   transition: color 0.2s;
   padding-bottom: 4px;
   position: relative;
+  scroll-snap-align: start;
+  flex-shrink: 0;
 }
 
 .tab-btn.active { color: var(--orange); }
@@ -407,7 +418,7 @@ html, body {
 .tab-btn::before {
   content: '';
   position: absolute;
-  top: 0; left: 20%; right: 20%;
+  top: 0; left: 15%; right: 15%;
   height: 2px;
   background: var(--orange);
   border-radius: 0 0 2px 2px;
@@ -417,7 +428,7 @@ html, body {
 .tab-btn.active::before { opacity: 1; }
 
 .tab-icon { font-size: 20px; line-height: 1; }
-.tab-label { font-size: 10px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
+.tab-label { font-size: 9px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; }
 
 /* ── Loading skeleton ── */
 .skeleton {
@@ -1321,7 +1332,7 @@ function makeBar(id, labels, data, color, unit='') {
     },
     options: {
       responsive: true, maintainAspectRatio: false,
-      layout: { padding: { top: 18 } },
+      layout: { padding: { top: 22, left: 2, right: 2 } },
       plugins: {
         legend: { display: false },
         tooltip: { enabled: false },
@@ -1583,7 +1594,7 @@ function makeHRCombo(id, labels, avgData, maxData, color) {
     },
     options: {
       responsive: true, maintainAspectRatio: false,
-      layout: { padding: { top: 18 } },
+      layout: { padding: { top: 22, left: 2, right: 2 } },
       plugins: {
         legend: { display: true, position: 'bottom', labels: { boxWidth: 8, padding: 10, font: { size: 10 } } },
         tooltip: { enabled: false },
