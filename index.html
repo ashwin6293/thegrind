@@ -878,11 +878,7 @@ html, body {
     <div class="chart-card" style="--accent:#38bdf8"><div class="chart-label" id="swim-time-label">Time (hrs)</div><div class="chart-wrap"><canvas id="swim-time-chart"></canvas></div></div>
     <div class="chart-card" style="--accent:#38bdf8"><div class="chart-label" id="swim-hr-label">Heart Rate (bpm)</div><div class="chart-wrap"><canvas id="swim-hr-chart"></canvas></div></div>
   </div>
-
-  <!-- ══ CROSSFIT TAB ══ -->
-  <div class="tab-page" id="page-crossfit">
-    <div class="section-heading" style="color:#f59e0b">🏋️ CROSSFIT</div>
-    <div class="range-tabs" id="crossfit-range-tabs">
+<div class="range-tabs" id="crossfit-range-tabs">
       <button class="range-tab" onclick="setGenericRange('crossfit',['Crossfit'],'#f59e0b','7d',this)">7 Days</button>
       <button class="range-tab" onclick="setGenericRange('crossfit',['Crossfit'],'#f59e0b','4w',this)">4 Weeks</button>
       <button class="range-tab active" onclick="setGenericRange('crossfit',['Crossfit'],'#f59e0b','12m',this)">12 Months</button>
@@ -899,11 +895,7 @@ html, body {
     <div class="chart-card" style="--accent:#f59e0b"><div class="chart-label" id="crossfit-time-label">Time (hrs)</div><div class="chart-wrap"><canvas id="crossfit-time-chart"></canvas></div></div>
     <div class="chart-card" style="--accent:#f59e0b"><div class="chart-label" id="crossfit-hr-label">Heart Rate (bpm)</div><div class="chart-wrap"><canvas id="crossfit-hr-chart"></canvas></div></div>
   </div>
-
-  <!-- ══ WORKOUT TAB ══ -->
-  <div class="tab-page" id="page-workout">
-    <div class="section-heading" style="color:#94a3b8">💪 WORKOUT</div>
-    <div class="range-tabs" id="workout-range-tabs">
+<div class="range-tabs" id="workout-range-tabs">
       <button class="range-tab" onclick="setGenericRange('workout',['Workout'],'#94a3b8','7d',this)">7 Days</button>
       <button class="range-tab" onclick="setGenericRange('workout',['Workout'],'#94a3b8','4w',this)">4 Weeks</button>
       <button class="range-tab active" onclick="setGenericRange('workout',['Workout'],'#94a3b8','12m',this)">12 Months</button>
@@ -920,11 +912,7 @@ html, body {
     <div class="chart-card" style="--accent:#94a3b8"><div class="chart-label" id="workout-time-label">Time (hrs)</div><div class="chart-wrap"><canvas id="workout-time-chart"></canvas></div></div>
     <div class="chart-card" style="--accent:#94a3b8"><div class="chart-label" id="workout-hr-label">Heart Rate (bpm)</div><div class="chart-wrap"><canvas id="workout-hr-chart"></canvas></div></div>
   </div>
-
-  <!-- ══ WEIGHT TRAINING TAB ══ -->
-  <div class="tab-page" id="page-weighttraining">
-    <div class="section-heading" style="color:#fb923c">🏋️ WEIGHT TRAINING</div>
-    <div class="range-tabs" id="weighttraining-range-tabs">
+<div class="range-tabs" id="weighttraining-range-tabs">
       <button class="range-tab" onclick="setGenericRange('weighttraining',['WeightTraining'],'#fb923c','7d',this)">7 Days</button>
       <button class="range-tab" onclick="setGenericRange('weighttraining',['WeightTraining'],'#fb923c','4w',this)">4 Weeks</button>
       <button class="range-tab active" onclick="setGenericRange('weighttraining',['WeightTraining'],'#fb923c','12m',this)">12 Months</button>
@@ -941,11 +929,7 @@ html, body {
     <div class="chart-card" style="--accent:#fb923c"><div class="chart-label" id="weighttraining-time-label">Time (hrs)</div><div class="chart-wrap"><canvas id="weighttraining-time-chart"></canvas></div></div>
     <div class="chart-card" style="--accent:#fb923c"><div class="chart-label" id="weighttraining-hr-label">Heart Rate (bpm)</div><div class="chart-wrap"><canvas id="weighttraining-hr-chart"></canvas></div></div>
   </div>
-
-  <!-- ══ RIDE TAB ══ -->
-  <div class="tab-page" id="page-ride">
-    <div class="section-heading" style="color:#f472b6">🚴 CYCLING</div>
-    <div class="range-tabs" id="ride-range-tabs">
+<div class="range-tabs" id="ride-range-tabs">
       <button class="range-tab" onclick="setGenericRange('ride',['Ride'],'#f472b6','7d',this)">7 Days</button>
       <button class="range-tab" onclick="setGenericRange('ride',['Ride'],'#f472b6','4w',this)">4 Weeks</button>
       <button class="range-tab active" onclick="setGenericRange('ride',['Ride'],'#f472b6','12m',this)">12 Months</button>
@@ -961,6 +945,28 @@ html, body {
     <div class="chart-card" style="--accent:#f472b6"><div class="chart-label" id="ride-count-label">Sessions</div><div class="chart-wrap"><canvas id="ride-count-chart"></canvas></div></div>
     <div class="chart-card" style="--accent:#f472b6"><div class="chart-label" id="ride-time-label">Time (hrs)</div><div class="chart-wrap"><canvas id="ride-time-chart"></canvas></div></div>
     <div class="chart-card" style="--accent:#f472b6"><div class="chart-label" id="ride-hr-label">Heart Rate (bpm)</div><div class="chart-wrap"><canvas id="ride-hr-chart"></canvas></div></div>
+  </div>
+
+
+  <!-- ══ OTHERS TAB ══ -->
+  <div class="tab-page" id="page-others">
+    <div class="section-heading" style="color:#a78bfa">🎯 OTHERS</div>
+    <div class="range-tabs" id="others-range-tabs">
+      <button class="range-tab" onclick="setGenericRange('others',['Crossfit','Workout','WeightTraining','Ride','Walk','RockClimbing'],'#a78bfa','7d',this)">7 Days</button>
+      <button class="range-tab" onclick="setGenericRange('others',['Crossfit','Workout','WeightTraining','Ride','Walk','RockClimbing'],'#a78bfa','4w',this)">4 Weeks</button>
+      <button class="range-tab active" onclick="setGenericRange('others',['Crossfit','Workout','WeightTraining','Ride','Walk','RockClimbing'],'#a78bfa','12m',this)">12 Months</button>
+      <button class="range-tab" onclick="setGenericRange('others',['Crossfit','Workout','WeightTraining','Ride','Walk','RockClimbing'],'#a78bfa','year',this)">By Year</button>
+    </div>
+    <div class="mini-stats">
+      <div class="mini-stat"><div class="mini-stat-val" id="others-stat-dist">—</div><div class="mini-stat-lbl">km</div></div>
+      <div class="mini-stat"><div class="mini-stat-val" id="others-stat-count">—</div><div class="mini-stat-lbl">sessions</div></div>
+      <div class="mini-stat"><div class="mini-stat-val" id="others-stat-time">—</div><div class="mini-stat-lbl">hrs</div></div>
+      <div class="mini-stat"><div class="mini-stat-val" id="others-stat-avghr">—</div><div class="mini-stat-lbl">avg bpm</div></div>
+    </div>
+    <div class="chart-card" style="--accent:#a78bfa"><div class="chart-label" id="others-dist-label">Distance (km)</div><div class="chart-wrap"><canvas id="others-dist-chart"></canvas></div></div>
+    <div class="chart-card" style="--accent:#a78bfa"><div class="chart-label" id="others-count-label">Sessions</div><div class="chart-wrap"><canvas id="others-count-chart"></canvas></div></div>
+    <div class="chart-card" style="--accent:#a78bfa"><div class="chart-label" id="others-time-label">Time (hrs)</div><div class="chart-wrap"><canvas id="others-time-chart"></canvas></div></div>
+    <div class="chart-card" style="--accent:#a78bfa"><div class="chart-label" id="others-hr-label">Heart Rate (bpm) — Avg &amp; Max</div><div class="chart-wrap"><canvas id="others-hr-chart"></canvas></div></div>
   </div>
 
   <!-- ══ AI TAB ══ -->
@@ -1015,11 +1021,38 @@ html, body {
       </div>
       <div style="margin-bottom:12px">
         <label style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:6px">Analysis Sheet ID</label>
-        <input id="analysisSheetId" type="text" placeholder="Paste your analysis Sheet ID here…" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:8px;font-family:Outfit,sans-serif;font-size:13px" autocorrect="off" spellcheck="false">
+        <input id="analysisSheetId" type="text" placeholder="Paste your analysis Sheet ID here…" value="1sDERJoiJ6qJqLhD4yQ4ZBka2H-aRIOv_WAawzriFjFA" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:8px;font-family:Outfit,sans-serif;font-size:13px" autocorrect="off" spellcheck="false">
       </div>
       <div class="ai-result-body" id="body-full"></div>
     </div>
 
+  </div>
+
+  <!-- ══ CALENDAR TAB ══ -->
+  <div class="tab-page" id="page-calendar">
+    <div class="section-heading">📅 CALENDAR</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <button onclick="changeCalMonth(-1)" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:8px;font-size:18px;cursor:pointer">‹</button>
+      <div id="cal-month-label" style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--text)"></div>
+      <button onclick="changeCalMonth(1)" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:8px;font-size:18px;cursor:pointer">›</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:8px">
+      <div style="text-align:center;font-size:10px;color:var(--muted);padding:4px">SUN</div>
+      <div style="text-align:center;font-size:10px;color:var(--muted);padding:4px">MON</div>
+      <div style="text-align:center;font-size:10px;color:var(--muted);padding:4px">TUE</div>
+      <div style="text-align:center;font-size:10px;color:var(--muted);padding:4px">WED</div>
+      <div style="text-align:center;font-size:10px;color:var(--muted);padding:4px">THU</div>
+      <div style="text-align:center;font-size:10px;color:var(--muted);padding:4px">FRI</div>
+      <div style="text-align:center;font-size:10px;color:var(--muted);padding:4px">SAT</div>
+    </div>
+    <div id="cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px"></div>
+    <div style="margin-top:16px;padding:12px;background:var(--surface);border-radius:10px;border:1px solid var(--border)">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Legend</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;font-size:12px">
+        <span>🏃 Run</span><span>⚽ Football</span><span>🥾 Hike</span><span>🏊 Swim</span>
+        <span>🏋️ Crossfit</span><span>💪 Workout</span><span>🏋️ Weights</span><span>🚴 Ride</span><span>🚶 Walk</span>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -1046,21 +1079,13 @@ html, body {
     <span class="tab-icon">🏊</span>
     <span class="tab-label">Swim</span>
   </button>
-  <button class="tab-btn" onclick="switchTab('crossfit',this)">
-    <span class="tab-icon">🏋️</span>
-    <span class="tab-label">Crossfit</span>
+  <button class="tab-btn" onclick="switchTab('others',this)">
+    <span class="tab-icon">🎯</span>
+    <span class="tab-label">Others</span>
   </button>
-  <button class="tab-btn" onclick="switchTab('workout',this)">
-    <span class="tab-icon">💪</span>
-    <span class="tab-label">Workout</span>
-  </button>
-  <button class="tab-btn" onclick="switchTab('weighttraining',this)">
-    <span class="tab-icon">🏋️</span>
-    <span class="tab-label">Weights</span>
-  </button>
-  <button class="tab-btn" onclick="switchTab('ride',this)">
-    <span class="tab-icon">🚴</span>
-    <span class="tab-label">Ride</span>
+  <button class="tab-btn" onclick="switchTab('calendar',this)">
+    <span class="tab-icon">📅</span>
+    <span class="tab-label">Calendar</span>
   </button>
   <button class="tab-btn" onclick="switchTab('ai',this)">
     <span class="tab-icon">🤖</span>
@@ -1076,6 +1101,7 @@ let runRange = '12m';
 let fbRange = '12m';
 let hikeRange = '12m';
 let swimRange = '12m';
+let othersRange = '12m';
 let crossfitRange = '12m';
 let workoutRange = '12m';
 let weighttrainingRange = '12m';
@@ -1149,6 +1175,7 @@ function parseRows(values) {
   }).filter(r => r.date && r.type);
 
   renderAll();
+  renderCalendar();
 }
 
 function parseDate(raw) {
@@ -1173,6 +1200,7 @@ function switchTab(name, btn) {
   document.getElementById('page-' + name).classList.add('active');
   btn.classList.add('active');
   document.querySelector('.scroll-area').scrollTop = 0;
+  if (name === 'calendar') renderCalendar();
 }
 
 // ─── Range switching ───────────────────────────────────────────────────────
@@ -1327,10 +1355,7 @@ function renderAll() {
   renderFbTab();
   renderHikeTab();
   renderGenericTab('swim', ['Swim'], '#38bdf8', swimRange);
-  renderGenericTab('crossfit', ['Crossfit'], '#f59e0b', crossfitRange);
-  renderGenericTab('workout', ['Workout'], '#94a3b8', workoutRange);
-  renderGenericTab('weighttraining', ['WeightTraining'], '#fb923c', weighttrainingRange);
-  renderGenericTab('ride', ['Ride'], '#f472b6', rideRange);
+  renderGenericTab('others', ['Crossfit','Workout','WeightTraining','Ride','Walk','RockClimbing'], '#a78bfa', othersRange);
 }
 
 // ─── Overall tab ───────────────────────────────────────────────────────────
@@ -1564,7 +1589,7 @@ function makeHRCombo(id, labels, avgData, maxData, color) {
         tooltip: { enabled: false },
         datalabels: {
           anchor: 'end', align: 'top', offset: 2,
-          color: '#aaa', font: { size: 9, weight: '600', family: 'Outfit' },
+          color: '#ddd', font: { size: 9, weight: '700', family: 'Outfit' },
           formatter: v => v > 0 ? String(v) : '',
           display: ctx => ctx.datasetIndex === 0 && ctx.dataset.data[ctx.dataIndex] > 0
         }
@@ -1627,6 +1652,71 @@ function setGenericRange(tid, types, color, r, btn) {
   document.querySelectorAll('#'+tid+'-range-tabs .range-tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   renderGenericTab(tid, types, color, r);
+}
+
+
+// ─── Calendar ──────────────────────────────────────────────────────────────
+const TYPE_ICONS = {
+  Run: '🏃', Soccer: '⚽', Hike: '🥾', Swim: '🏊',
+  Crossfit: '🏋️', Workout: '💪', WeightTraining: '🏋️',
+  Ride: '🚴', Walk: '🚶', RockClimbing: '🧗'
+};
+
+let calYear = new Date().getFullYear();
+let calMonth = new Date().getMonth();
+
+function changeCalMonth(dir) {
+  calMonth += dir;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const label = document.getElementById('cal-month-label');
+  const grid = document.getElementById('cal-grid');
+  if (!label || !grid) return;
+
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  label.textContent = monthNames[calMonth] + ' ' + calYear;
+
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const today = new Date();
+
+  // Build activity map for this month
+  const actMap = {};
+  allRows.forEach(r => {
+    if (!r.date) return;
+    if (r.date.getFullYear() === calYear && r.date.getMonth() === calMonth) {
+      const d = r.date.getDate();
+      if (!actMap[d]) actMap[d] = new Set();
+      actMap[d].add(r.type);
+    }
+  });
+
+  grid.innerHTML = '';
+
+  // Empty cells before first day
+  for (let i = 0; i < firstDay; i++) {
+    grid.innerHTML += '<div></div>';
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const isToday = today.getFullYear() === calYear && today.getMonth() === calMonth && today.getDate() === d;
+    const types = actMap[d] ? [...actMap[d]] : [];
+    const icons = types.map(t => TYPE_ICONS[t] || '•').join('');
+
+    const hasActivity = types.length > 0;
+    const bgColor = isToday ? 'rgba(252,76,2,0.25)' : hasActivity ? 'var(--surface2)' : 'var(--surface)';
+    const border = isToday ? '1px solid var(--orange)' : hasActivity ? '1px solid var(--border)' : '1px solid transparent';
+
+    grid.innerHTML += `
+      <div style="background:${bgColor};border:${border};border-radius:8px;padding:4px 2px;min-height:52px;display:flex;flex-direction:column;align-items:center;gap:1px">
+        <div style="font-size:11px;font-weight:600;color:${isToday ? 'var(--orange)' : hasActivity ? 'var(--text)' : 'var(--muted)'};">${d}</div>
+        <div style="font-size:11px;line-height:1.3;text-align:center">${icons}</div>
+      </div>`;
+  }
 }
 
 // ─── Auto-load sample ──────────────────────────────────────────────────────
@@ -1921,7 +2011,11 @@ function formatAIResponse(text) {
     .replace(/\n/g, '<br>');
 }
 
-window.addEventListener('DOMContentLoaded', () => { loadData(); });
+window.addEventListener('DOMContentLoaded', () => {
+  // Don't auto-fetch — wait for user to tap refresh
+  // Show empty state message
+  renderCalendar();
+});
 </script>
 </body>
 </html>
